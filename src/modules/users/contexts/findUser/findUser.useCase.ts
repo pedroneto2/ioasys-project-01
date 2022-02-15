@@ -13,10 +13,17 @@ export class FindUserUseCase {
     private userRepository: UserRepository,
   ) {}
 
-  async findOne(id?: string, email?: string): Promise<User> {
-    const user =
-      (await this.userRepository.findById(id)) ||
-      (await this.userRepository.findByEmail(email));
+  async findById(id: string): Promise<User> {
+    const user = await this.userRepository.findById(id);
+
+    if (!user) {
+      throw new ConflictException(notFound('User'));
+    }
+    return user;
+  }
+
+  async findByEmail(email: string): Promise<User> {
+    const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
       throw new ConflictException(notFound('User'));

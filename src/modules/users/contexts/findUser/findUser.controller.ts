@@ -1,22 +1,29 @@
-import { Controller, Get, HttpCode, HttpStatus, Query } from '@nestjs/common';
+import {
+  Controller,
+  UseGuards,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
-  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 
 import { User } from '@shared/entities/user/user.entity';
 import { instanceToInstance } from 'class-transformer';
-
-import { FindUserUseCase } from './findUser.useCase';
+import { FindUserUseCase } from '@modules/users/contexts/findUser/findUser.useCase';
+import { JwtAuthGuard } from '@shared/modules/auth/jwt-auth.guard';
 
 @ApiTags('Users')
 @Controller('users')
 export class FindUserController {
   constructor(private findUserUseCase: FindUserUseCase) {}
 
-  @Get('getone?')
+  @UseGuards(JwtAuthGuard)
+  @Get('getOne/byId/:id')
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({
     type: User,
@@ -24,24 +31,25 @@ export class FindUserController {
   @ApiBadRequestResponse({
     description: 'Bad Request',
   })
-  @ApiQuery({
-    name: 'id',
-    required: false,
-    type: String,
-  })
-  @ApiQuery({
-    name: 'email',
-    required: false,
-    type: String,
-  })
-  public async findUser(
-    @Query('id') id?: string,
-    @Query('email') email?: string,
-  ) {
-    const user = await this.findUserUseCase.findOne(id, email);
+  public async findUserById(@Param('id') id: string) {
+    const user = await this.findUserUseCase.findById(id);
     return instanceToInstance(user);
   }
 
+  @Get('getOne/byEmail/:email')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiCreatedResponse({
+    type: User,
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad Request',
+  })
+  public async findUserByEmail(@Param('email') id: string) {
+    const user = await this.findUserUseCase.findByEmail(id);
+    return instanceToInstance(user);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get('getAll')
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({

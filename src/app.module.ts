@@ -3,6 +3,7 @@ import envConfig from '@config/env';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from '@modules/users/user.module';
+import { AuthModule } from '@shared/modules/auth.module';
 
 import {
   WinstonModule,
@@ -28,6 +29,7 @@ import * as winston from 'winston';
     }),
     TypeOrmModule.forRoot(),
     UserModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

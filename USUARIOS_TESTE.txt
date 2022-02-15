@@ -1,0 +1,9 @@
+{
+  "fullName": "Oscar Neymar",
+  "cpf": "23556647213",
+  "email": "oscar_neymar@arquitetodosjogos.com",
+  "password": "Ab12345678*",
+  "address": "Rua Legal",
+  "state": "SP",
+  "zipCode": "13190000"
+}
