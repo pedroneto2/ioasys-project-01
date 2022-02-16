@@ -1,11 +1,4 @@
-import {
-  Controller,
-  UseGuards,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Param,
-} from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus, Param } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
@@ -15,21 +8,19 @@ import {
 import { User } from '@shared/entities/user/user.entity';
 import { instanceToInstance } from 'class-transformer';
 import { FindUserUseCase } from '@modules/users/contexts/findUser/findUser.useCase';
-import { JwtAuthGuard } from '@shared/modules/auth/jwt-auth.guard';
 
 @ApiTags('Users')
 @Controller('users')
 export class FindUserController {
   constructor(private findUserUseCase: FindUserUseCase) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get('getOne/byId/:id')
-  @HttpCode(HttpStatus.CREATED)
+  @HttpCode(HttpStatus.FOUND)
   @ApiCreatedResponse({
     type: User,
   })
   @ApiBadRequestResponse({
-    description: 'Bad Request',
+    description: 'Unauthorized',
   })
   public async findUserById(@Param('id') id: string) {
     const user = await this.findUserUseCase.findById(id);
@@ -37,26 +28,25 @@ export class FindUserController {
   }
 
   @Get('getOne/byEmail/:email')
-  @HttpCode(HttpStatus.CREATED)
+  @HttpCode(HttpStatus.FOUND)
   @ApiCreatedResponse({
     type: User,
   })
   @ApiBadRequestResponse({
-    description: 'Bad Request',
+    description: 'Unauthorized',
   })
   public async findUserByEmail(@Param('email') id: string) {
     const user = await this.findUserUseCase.findByEmail(id);
     return instanceToInstance(user);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('getAll')
-  @HttpCode(HttpStatus.CREATED)
+  @HttpCode(HttpStatus.FOUND)
   @ApiCreatedResponse({
-    type: User,
+    type: [User],
   })
   @ApiBadRequestResponse({
-    description: 'Bad Request',
+    description: 'Unauthorized',
   })
   public async getAll() {
     const user = await this.findUserUseCase.getAll();

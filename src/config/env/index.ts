@@ -3,7 +3,7 @@ export default () => {
     nodeEnv: process.env.NODE_ENV || 'local',
 
     port: parseInt(process.env.PORT, 10),
-    expiresIn: parseInt(process.env.EXPIRES_IN, 10),
+    expiresIn: process.env.EXPIRES_IN,
     jwtSecret: process.env.JWT_SECRET,
 
     dbHost: process.env.DB_HOST,

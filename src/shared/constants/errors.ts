@@ -4,3 +4,7 @@ export function alreadyExists(resource: string): string {
 export function notFound(resource: string): string {
   return `${resource}-not-found`;
 }
+
+export function unexpected(resource: string): string {
+  return `Unexpected-error: ${resource}`;
+}

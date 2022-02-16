@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsString, Length, IsOptional } from 'class-validator';
+import {
+  IsEmail,
+  IsString,
+  Length,
+  IsOptional,
+  IsNumberString,
+} from 'class-validator';
 
 export class EditUserRequestBodyDTO {
   @ApiProperty()
@@ -12,6 +18,7 @@ export class EditUserRequestBodyDTO {
   @IsString()
   @Length(11, 11)
   @IsOptional()
+  @IsNumberString()
   public cpf: string;
 
   @ApiProperty()
@@ -35,5 +42,6 @@ export class EditUserRequestBodyDTO {
   @IsString()
   @Length(8, 8)
   @IsOptional()
+  @IsNumberString()
   public zipCode: string;
 }

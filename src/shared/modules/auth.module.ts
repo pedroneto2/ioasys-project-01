@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 
 import { AuthService } from '@shared/modules/auth/services/auth.service';
 import { LocalStrategy } from '@shared/modules/auth/strategies/local.strategy';
@@ -10,7 +11,7 @@ import { BcryptProvider } from '@shared/providers/EncryptProvider/bcrypt.provide
 import { AuthController } from '@shared/modules/auth/controllers/auth.controller';
 import { UserRepository } from '@modules/users/repository/user.repository';
 import { JwtStrategy } from '@shared/modules/auth/strategies/jwt.strategy';
-import { ConfigModule } from '@nestjs/config';
+import { JwtAuthGuard } from '@shared/modules/auth/jwt-auth.guard';
 import envVariables from '@config/env';
 
 @Module({
@@ -27,6 +28,7 @@ import envVariables from '@config/env';
     }),
   ],
   providers: [
+    { provide: 'APP_GUARD', useClass: JwtAuthGuard },
     { provide: 'ENCRYPT_PROVIDER', useClass: BcryptProvider },
     AuthService,
     LocalStrategy,

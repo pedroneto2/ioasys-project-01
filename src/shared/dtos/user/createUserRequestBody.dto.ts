@@ -5,6 +5,7 @@ import {
   IsString,
   Length,
   Matches,
+  IsNumberString,
 } from 'class-validator';
 
 const PASSWORD_REGEX =
@@ -21,6 +22,7 @@ export class CreateUserRequestBodyDTO {
   @IsString()
   @IsNotEmpty()
   @Length(11, 11)
+  @IsNumberString()
   public cpf: string;
 
   @ApiProperty()
@@ -50,5 +52,6 @@ export class CreateUserRequestBodyDTO {
   @IsString()
   @IsNotEmpty()
   @Length(8, 8)
+  @IsNumberString()
   public zipCode: string;
 }

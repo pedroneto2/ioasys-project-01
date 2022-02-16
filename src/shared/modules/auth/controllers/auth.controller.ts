@@ -4,6 +4,7 @@ import {
   ApiCreatedResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { Public } from '@shared/decorators/isPublic.decorator';
 
 import { LocalAuthGuard } from '@shared/modules/auth/local-auth.guard';
 import { AuthService } from '@shared/modules/auth/services/auth.service';
@@ -14,6 +15,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @UseGuards(LocalAuthGuard)
+  @Public()
   @Post('login')
   @ApiCreatedResponse({
     description: 'successfully authenticated',
