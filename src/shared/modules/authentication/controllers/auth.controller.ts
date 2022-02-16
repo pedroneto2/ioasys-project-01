@@ -6,8 +6,8 @@ import {
 } from '@nestjs/swagger';
 import { Public } from '@shared/decorators/isPublic.decorator';
 
-import { LocalAuthGuard } from '@shared/modules/auth/local-auth.guard';
-import { AuthService } from '@shared/modules/auth/services/auth.service';
+import { LocalAuthGuard } from '@shared/modules/authentication/guards/local-auth.guard';
+import { AuthService } from '@shared/modules/authentication/services/auth.service';
 
 @ApiTags('Auth')
 @Controller('auth')

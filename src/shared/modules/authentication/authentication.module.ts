@@ -4,14 +4,14 @@ import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 
-import { AuthService } from '@shared/modules/auth/services/auth.service';
-import { LocalStrategy } from '@shared/modules/auth/strategies/local.strategy';
+import { AuthService } from '@shared/modules/authentication/services/auth.service';
+import { LocalStrategy } from '@shared/modules/authentication/strategies/local.strategy';
 import { FindUserUseCase } from '@modules/users/contexts/findUser/findUser.useCase';
 import { BcryptProvider } from '@shared/providers/EncryptProvider/bcrypt.provider';
-import { AuthController } from '@shared/modules/auth/controllers/auth.controller';
+import { AuthController } from '@shared/modules/authentication/controllers/auth.controller';
 import { UserRepository } from '@modules/users/repository/user.repository';
-import { JwtStrategy } from '@shared/modules/auth/strategies/jwt.strategy';
-import { JwtAuthGuard } from '@shared/modules/auth/jwt-auth.guard';
+import { JwtStrategy } from '@shared/modules/authentication/strategies/jwt.strategy';
+import { JwtAuthGuard } from '@shared/modules/authentication/guards/jwt-auth.guard';
 import envVariables from '@config/env';
 
 @Module({
@@ -37,4 +37,4 @@ import envVariables from '@config/env';
   ],
   controllers: [AuthController],
 })
-export class AuthModule {}
+export class AuthenticationModule {}

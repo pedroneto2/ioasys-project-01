@@ -8,12 +8,14 @@ import {
 import { User } from '@shared/entities/user/user.entity';
 import { instanceToInstance } from 'class-transformer';
 import { FindUserUseCase } from '@modules/users/contexts/findUser/findUser.useCase';
+import { AdminRoute } from '@shared/decorators/adminRoute.decorator';
 
 @ApiTags('Users')
 @Controller('users')
 export class FindUserController {
   constructor(private findUserUseCase: FindUserUseCase) {}
 
+  @AdminRoute()
   @Get('getOne/byId/:id')
   @HttpCode(HttpStatus.FOUND)
   @ApiCreatedResponse({
@@ -27,6 +29,7 @@ export class FindUserController {
     return instanceToInstance(user);
   }
 
+  @AdminRoute()
   @Get('getOne/byEmail/:email')
   @HttpCode(HttpStatus.FOUND)
   @ApiCreatedResponse({
@@ -40,6 +43,7 @@ export class FindUserController {
     return instanceToInstance(user);
   }
 
+  @AdminRoute()
   @Get('getAll')
   @HttpCode(HttpStatus.FOUND)
   @ApiCreatedResponse({
