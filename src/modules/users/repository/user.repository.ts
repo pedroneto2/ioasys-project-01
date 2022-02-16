@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { EntityRepository, Repository } from 'typeorm';
 
 import { CreateUserDTO } from '@shared/dtos/user/createUser.dto';
+import { EditUserDTO } from '@shared/dtos/user/editUser.dto';
 import { User } from '@shared/entities/user/user.entity';
 
 @EntityRepository(User)
@@ -12,15 +13,25 @@ export class UserRepository extends Repository<User> {
   }
 
   async findById(id: string): Promise<User | undefined> {
-    return this.findOne(id);
+    return await this.findOne(id);
   }
 
   async getAll(): Promise<User[]> {
-    return this.find();
+    return await this.find();
   }
 
   async createUser(createUserDTO: CreateUserDTO): Promise<User> {
     const user = this.create(createUserDTO);
     return this.save(user);
+  }
+
+  async editUser(userId: string, newUserData: EditUserDTO): Promise<User> {
+    const updatedData = await this.createQueryBuilder('users')
+      .update<User>(User, { ...newUserData })
+      .where('id = :id', { id: userId })
+      .returning('full_name, cpf, email, address, state, zip_code')
+      .updateEntity(true)
+      .execute();
+    return updatedData.raw[0];
   }
 }

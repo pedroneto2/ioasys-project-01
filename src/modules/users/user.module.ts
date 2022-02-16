@@ -8,6 +8,8 @@ import { FindUserController } from '@modules/users/contexts/findUser/findUser.co
 import { CreateUserUseCase } from '@modules/users/contexts/createUser/createUser.useCase';
 import { FindUserUseCase } from '@modules/users/contexts/findUser/findUser.useCase';
 import { UserRepository } from '@modules/users/repository/user.repository';
+import { EditUserController } from '@modules/users/contexts/editUser/editUser.controller';
+import { EditUserUseCase } from '@modules/users/contexts/editUser/editUser.useCase';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserRepository]), BcryptProvider],
@@ -15,7 +17,8 @@ import { UserRepository } from '@modules/users/repository/user.repository';
     { provide: 'ENCRYPT_PROVIDER', useClass: BcryptProvider },
     CreateUserUseCase,
     FindUserUseCase,
+    EditUserUseCase,
   ],
-  controllers: [CreateUserController, FindUserController],
+  controllers: [CreateUserController, FindUserController, EditUserController],
 })
 export class UserModule {}

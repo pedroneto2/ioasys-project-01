@@ -9,7 +9,7 @@ import { CreateUserRequestBodyDTO } from '@shared/dtos/user/createUserRequestBod
 import { User } from '@shared/entities/user/user.entity';
 import { instanceToInstance } from 'class-transformer';
 
-import { CreateUserUseCase } from './createUser.useCase';
+import { CreateUserUseCase } from '@modules/users/contexts/createUser/createUser.useCase';
 
 @ApiTags('Users')
 @Controller('users/new-user')
