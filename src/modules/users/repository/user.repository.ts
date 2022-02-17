@@ -8,7 +8,7 @@ import { unexpected } from '@shared/constants/errors';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
-  async findByEmail(email: string): Promise<User | undefined> {
+  async findUserByEmail(email: string): Promise<User | undefined> {
     try {
       return await this.findOne({ email });
     } catch (error) {
@@ -16,7 +16,7 @@ export class UserRepository extends Repository<User> {
     }
   }
 
-  async findById(id: string): Promise<User | undefined> {
+  async findUserById(id: string): Promise<User | undefined> {
     try {
       return await this.findOne(id);
     } catch (error) {
@@ -24,7 +24,7 @@ export class UserRepository extends Repository<User> {
     }
   }
 
-  async getAll(): Promise<User[]> {
+  async getAllUsers(): Promise<User[]> {
     try {
       return await this.find();
     } catch (error) {
@@ -41,20 +41,21 @@ export class UserRepository extends Repository<User> {
     }
   }
 
-  async deleteUser(id: string): Promise<boolean> {
+  async deleteUserById(id: string): Promise<User> {
     try {
-      await this.createQueryBuilder()
+      const response = await this.createQueryBuilder()
         .softDelete()
         .from(User)
         .where('id = :id', { id })
+        .returning('full_name, cpf, email, address, state, zip_code')
         .execute();
-      return true;
+      return response.raw[0];
     } catch (error) {
       throw new ConflictException(unexpected(error.message));
     }
   }
 
-  async editUser(userId: string, newUserData: EditUserDTO): Promise<User> {
+  async editUserById(userId: string, newUserData: EditUserDTO): Promise<User> {
     try {
       const updatedData = await this.createQueryBuilder('users')
         .update<User>(User, { ...newUserData })

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 
 import { EditUserRequestBodyDTO } from '@shared/dtos/user/editUserRequestBody.dto';
 import { User } from '@shared/entities/user/user.entity';
 import { UserRepository } from '@modules/users/repository/user.repository';
-import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class EditUserUseCase {
@@ -16,7 +16,7 @@ export class EditUserUseCase {
     userId: string,
     newUserData: EditUserRequestBodyDTO,
   ): Promise<User> {
-    const user = await this.userRepository.editUser(userId, newUserData);
+    const user = await this.userRepository.editUserById(userId, newUserData);
     return user;
   }
 }

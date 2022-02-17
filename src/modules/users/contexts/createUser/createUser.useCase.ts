@@ -27,7 +27,7 @@ export class CreateUserUseCase {
     state,
     zipCode,
   }: CreateUserRequestBodyDTO): Promise<User> {
-    const savedUser = await this.userRepository.findByEmail(email);
+    const savedUser = await this.userRepository.findUserByEmail(email);
 
     if (savedUser) {
       throw new ConflictException(alreadyExists('email'));

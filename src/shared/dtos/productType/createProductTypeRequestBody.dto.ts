@@ -6,5 +6,5 @@ export class CreateProductTypeRequestBodyDTO {
   @IsString()
   @IsNotEmpty()
   @Length(3, 100)
-  public type: string;
+  public name: string;
 }

@@ -7,17 +7,53 @@ import { unexpected } from '@shared/constants/errors';
 
 @EntityRepository(Product)
 export class ProductRepository extends Repository<Product> {
-  async findProductByName(name: string): Promise<Product | undefined> {
+  async findProductByName(
+    name: string,
+    withDeleted = false,
+  ): Promise<Product | undefined> {
     try {
-      return await this.findOne({ name });
+      return await this.findOne({ name }, { withDeleted });
     } catch (error) {
       throw new ConflictException(unexpected(error.message));
     }
   }
 
-  async findProductById(id: string): Promise<Product | undefined> {
+  async findProductById(
+    id: string,
+    withDeleted = false,
+  ): Promise<Product | undefined> {
     try {
-      return await this.findOne(id);
+      return await this.findOne(id, { withDeleted });
+    } catch (error) {
+      throw new ConflictException(unexpected(error.message));
+    }
+  }
+
+  async getAllProducts(withDeleted = false): Promise<Product[]> {
+    try {
+      return await this.find({ withDeleted });
+    } catch (error) {
+      throw new ConflictException(unexpected(error.message));
+    }
+  }
+
+  async deleteOneById(id: string): Promise<Product> {
+    try {
+      const response = await this.createQueryBuilder()
+        .softDelete()
+        .from(Product)
+        .where('id = :id', { id })
+        .returning([
+          'id',
+          'name',
+          'type',
+          'size',
+          'description',
+          'stockCount',
+          'price',
+        ])
+        .execute();
+      return response.raw[0];
     } catch (error) {
       throw new ConflictException(unexpected(error.message));
     }

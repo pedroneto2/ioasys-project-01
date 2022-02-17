@@ -8,3 +8,7 @@ export function notFound(resource: string): string {
 export function unexpected(resource: string): string {
   return `Unexpected-error: ${resource}`;
 }
+
+export function softDeleted(resource: string): string {
+  return `${resource}-soft-deleted`;
+}

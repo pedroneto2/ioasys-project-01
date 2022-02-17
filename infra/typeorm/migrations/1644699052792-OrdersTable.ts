@@ -9,8 +9,7 @@ export class OrdersTable1644699052792 implements MigrationInterface {
             user_id varchar(255) REFERENCES Users(id),
             status status_type,
             created_at timestamp DEFAULT CURRENT_TIMESTAMP,
-            updated_at timestamp DEFAULT CURRENT_TIMESTAMP,
-            deleted_at timestamp 
+            updated_at timestamp DEFAULT CURRENT_TIMESTAMP
         );`);
   }
 

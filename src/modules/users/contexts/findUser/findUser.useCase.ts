@@ -1,10 +1,10 @@
 import { ConflictException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 
 import { notFound } from '@shared/constants/errors';
 
 import { User } from '@shared/entities/user/user.entity';
 import { UserRepository } from '@modules/users/repository/user.repository';
-import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class FindUserUseCase {
@@ -13,8 +13,8 @@ export class FindUserUseCase {
     private userRepository: UserRepository,
   ) {}
 
-  async findById(id: string): Promise<User> {
-    const user = await this.userRepository.findById(id);
+  async findUserById(id: string): Promise<User> {
+    const user = await this.userRepository.findUserById(id);
 
     if (!user) {
       throw new ConflictException(notFound('User'));
@@ -22,8 +22,8 @@ export class FindUserUseCase {
     return user;
   }
 
-  async findByEmail(email: string): Promise<User> {
-    const user = await this.userRepository.findByEmail(email);
+  async findUserByEmail(email: string): Promise<User> {
+    const user = await this.userRepository.findUserByEmail(email);
 
     if (!user) {
       throw new ConflictException(notFound('User'));
@@ -31,8 +31,8 @@ export class FindUserUseCase {
     return user;
   }
 
-  async getAll(): Promise<User[]> {
-    const users = await this.userRepository.getAll();
+  async getAllUsers(): Promise<User[]> {
+    const users = await this.userRepository.getAllUsers();
     return users;
   }
 }

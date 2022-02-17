@@ -7,14 +7,14 @@ export class ProductsTable1644701458577 implements MigrationInterface {
     CREATE TABLE Products (
         id varchar(255) PRIMARY KEY,
         name varchar(255) NOT NULL UNIQUE,
-        type varchar(255) REFERENCES Product_Types(type),
+        type varchar(255) REFERENCES Product_Types(name),
         size size_type,
         description varchar(255),
         stock_count int,
         price DECIMAL(6,2),
         created_at timestamp DEFAULT CURRENT_TIMESTAMP,
         updated_at timestamp DEFAULT CURRENT_TIMESTAMP,
-        deleted_at timestamp 
+        deleted_at timestamp
     );`);
   }
 

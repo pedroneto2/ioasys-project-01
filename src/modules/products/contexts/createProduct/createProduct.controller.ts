@@ -13,7 +13,7 @@ import { CreateProductUseCase } from '@modules/products/contexts/createProduct/c
 import { AdminRoute } from '@shared/decorators/adminRoute.decorator';
 
 @ApiTags('Products')
-@Controller('product/new-product')
+@Controller('products/new-product')
 export class CreateProductController {
   constructor(private createProductUseCase: CreateProductUseCase) {}
 

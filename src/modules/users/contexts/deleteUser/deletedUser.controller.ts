@@ -11,8 +11,10 @@ import {
   ApiCreatedResponse,
   ApiTags,
 } from '@nestjs/swagger';
+
 import { PasswordRequestBodyDTO } from '@shared/dtos/user/passwordRequestBody.dto';
 import { DeleteUserUseCase } from '@modules/users/contexts/deleteUser/deleteUser.useCase';
+import { User } from '@shared/entities/user/user.entity';
 
 @ApiTags('Users')
 @Controller('user/delete')
@@ -22,20 +24,20 @@ export class DeleteUserController {
   @Post()
   @HttpCode(HttpStatus.OK)
   @ApiCreatedResponse({
-    type: Boolean,
+    type: User,
   })
   @ApiBadRequestResponse({
     description: 'Unauthorized',
   })
-  public async delete(
+  public async deleteOwnUser(
     @Body() passwordRequestBodyDTO: PasswordRequestBodyDTO,
     @Request() req,
   ) {
     const { userId } = req.user;
-    const success = await this.deleteUserUseCase.execute(
+    const response = await this.deleteUserUseCase.execute(
       userId,
       passwordRequestBodyDTO.password,
     );
-    return success;
+    return response;
   }
 }

@@ -2,6 +2,7 @@ import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { alreadyExists } from '@shared/constants/errors';
+import { softDeleted } from '@shared/constants/errors';
 
 import { CreateProductRequestBodyDTO } from '@shared/dtos/product/createProductRequestBody.dto';
 import { Product } from '@shared/entities/product/product.entity';
@@ -24,9 +25,15 @@ export class CreateProductUseCase {
     price,
     type,
   }: CreateProductRequestBodyDTO): Promise<Product> {
-    const savedProduct = await this.productRepository.findProductByName(name);
+    const savedProduct = await this.productRepository.findProductByName(
+      name,
+      true,
+    );
 
     if (savedProduct) {
+      if (savedProduct.deletedAt) {
+        throw new ConflictException(softDeleted('Product'));
+      }
       throw new ConflictException(alreadyExists('Product'));
     }
 

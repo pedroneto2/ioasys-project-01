@@ -4,9 +4,9 @@ import {
   ApiCreatedResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { instanceToInstance } from 'class-transformer';
 
 import { User } from '@shared/entities/user/user.entity';
-import { instanceToInstance } from 'class-transformer';
 import { FindUserUseCase } from '@modules/users/contexts/findUser/findUser.useCase';
 import { AdminRoute } from '@shared/decorators/adminRoute.decorator';
 
@@ -24,8 +24,8 @@ export class FindUserController {
   @ApiBadRequestResponse({
     description: 'Unauthorized',
   })
-  public async findUserById(@Param('id') id: string) {
-    const user = await this.findUserUseCase.findById(id);
+  public async findOneById(@Param('id') id: string) {
+    const user = await this.findUserUseCase.findUserById(id);
     return instanceToInstance(user);
   }
 
@@ -38,8 +38,8 @@ export class FindUserController {
   @ApiBadRequestResponse({
     description: 'Unauthorized',
   })
-  public async findUserByEmail(@Param('email') id: string) {
-    const user = await this.findUserUseCase.findByEmail(id);
+  public async findOneByEmail(@Param('email') id: string) {
+    const user = await this.findUserUseCase.findUserByEmail(id);
     return instanceToInstance(user);
   }
 
@@ -53,7 +53,7 @@ export class FindUserController {
     description: 'Unauthorized',
   })
   public async getAll() {
-    const user = await this.findUserUseCase.getAll();
-    return instanceToInstance(user);
+    const users = await this.findUserUseCase.getAllUsers();
+    return instanceToInstance(users);
   }
 }

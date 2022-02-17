@@ -1,7 +1,9 @@
 import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
-import { UserRepository } from '@modules/users/repository/user.repository';
 import { InjectRepository } from '@nestjs/typeorm';
+
+import { UserRepository } from '@modules/users/repository/user.repository';
 import { BcryptProvider } from '@shared/providers/EncryptProvider/bcrypt.provider';
+import { User } from '@shared/entities/user/user.entity';
 
 @Injectable()
 export class DeleteUserUseCase {
@@ -12,8 +14,8 @@ export class DeleteUserUseCase {
     private encryption: BcryptProvider,
   ) {}
 
-  async execute(id: string, password: string): Promise<boolean> {
-    const user = await this.userRepository.findById(id);
+  async execute(id: string, password: string): Promise<User> {
+    const user = await this.userRepository.findUserById(id);
     const validPassword = await this.encryption.compareHash(
       password,
       user.password,
@@ -21,7 +23,7 @@ export class DeleteUserUseCase {
     if (!validPassword) {
       throw new UnauthorizedException();
     }
-    const success = await this.userRepository.deleteUser(id);
-    return success;
+    const response = await this.userRepository.deleteUserById(id);
+    return response;
   }
 }

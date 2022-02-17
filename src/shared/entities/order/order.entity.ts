@@ -5,7 +5,6 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  DeleteDateColumn,
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
@@ -33,9 +32,6 @@ export class Order {
   @ApiProperty()
   @UpdateDateColumn({ name: 'updated_at' })
   public updatedAt: Date;
-
-  @DeleteDateColumn({ name: 'deleted_at' })
-  public deletedAt: Date;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
