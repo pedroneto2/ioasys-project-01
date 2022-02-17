@@ -10,7 +10,8 @@ import {
   JoinColumn,
 } from 'typeorm';
 
-import { User } from '../user/user.entity';
+import { User } from '@shared/entities/user/user.entity';
+import { OrderStatus } from '@shared/entities/order/orderStatus.enum';
 
 @Entity('orders')
 export class Order {
@@ -19,8 +20,11 @@ export class Order {
   public id: string;
 
   @ApiProperty()
-  @Column()
-  public status: string;
+  @Column({
+    type: 'enum',
+    enum: OrderStatus,
+  })
+  public status: OrderStatus;
 
   @ApiProperty()
   @CreateDateColumn({ name: 'created_at' })

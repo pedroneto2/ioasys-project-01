@@ -10,7 +10,8 @@ import {
   DeleteDateColumn,
 } from 'typeorm';
 
-import { Stock } from '../stock/stock.entity';
+import { Product_Types } from '@shared/entities/product_types/product_types.entity';
+import { ProducstSize } from '@shared/entities/product/productsSize.enum';
 
 @Entity('products')
 export class Product {
@@ -20,11 +21,14 @@ export class Product {
 
   @ApiProperty()
   @Column()
-  public type: string;
+  public stock_count: number;
 
   @ApiProperty()
-  @Column()
-  public size: string;
+  @Column({
+    type: 'enum',
+    enum: ProducstSize,
+  })
+  public size: ProducstSize;
 
   @ApiProperty()
   @Column()
@@ -45,7 +49,7 @@ export class Product {
   @DeleteDateColumn({ name: 'deleted_at' })
   public deletedAt: Date;
 
-  @ManyToOne(() => Stock)
-  @JoinColumn({ name: 'stock_id' })
-  stockID: Stock;
+  @ManyToOne(() => Product_Types)
+  @JoinColumn({ name: 'type' })
+  type: Product_Types;
 }
