@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   Entity,
   Column,
+  Unique,
   ManyToOne,
   JoinColumn,
   PrimaryGeneratedColumn,
@@ -10,10 +11,11 @@ import {
   DeleteDateColumn,
 } from 'typeorm';
 
-import { Product_Types } from '@shared/entities/product_types/product_types.entity';
+import { ProductType } from '@shared/entities/productType/productType.entity';
 import { ProducstSize } from '@shared/entities/product/productsSize.enum';
 
 @Entity('products')
+@Unique(['name'])
 export class Product {
   @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
@@ -21,7 +23,11 @@ export class Product {
 
   @ApiProperty()
   @Column()
-  public stock_count: number;
+  public name: string;
+
+  @ApiProperty()
+  @Column({ name: 'stock_count' })
+  public stockCount: number;
 
   @ApiProperty()
   @Column({
@@ -49,7 +55,7 @@ export class Product {
   @DeleteDateColumn({ name: 'deleted_at' })
   public deletedAt: Date;
 
-  @ManyToOne(() => Product_Types)
+  @ManyToOne(() => ProductType)
   @JoinColumn({ name: 'type' })
-  type: Product_Types;
+  type: ProductType;
 }

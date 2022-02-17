@@ -1,16 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   Entity,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
 } from 'typeorm';
 
 @Entity('product_types')
-export class Product_Types {
+export class ProductType {
   @ApiProperty()
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   public type: string;
 
   @ApiProperty()

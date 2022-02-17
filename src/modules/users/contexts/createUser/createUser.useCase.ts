@@ -1,13 +1,13 @@
 import { ConflictException, Inject, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { v4 as uuidV4 } from 'uuid';
+import { BcryptProvider } from '@shared/providers/EncryptProvider/bcrypt.provider';
 
 import { alreadyExists } from '@shared/constants/errors';
 
 import { CreateUserRequestBodyDTO } from '@shared/dtos/user/createUserRequestBody.dto';
 import { User } from '@shared/entities/user/user.entity';
 import { UserRepository } from '@modules/users/repository/user.repository';
-import { BcryptProvider } from '@shared/providers/EncryptProvider/bcrypt.provider';
-import { InjectRepository } from '@nestjs/typeorm';
-import { v4 as uuidV4 } from 'uuid';
 
 @Injectable()
 export class CreateUserUseCase {

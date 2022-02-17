@@ -15,6 +15,6 @@ export class OrdersTable1644699052792 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query('DROP TABLE Orders');
+    await queryRunner.query('DROP TABLE Orders; DROP TYPE status_type');
   }
 }
