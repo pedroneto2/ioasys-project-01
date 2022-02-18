@@ -14,7 +14,7 @@ import { v4 as uuidV4 } from 'uuid';
 export class CreateProductUseCase {
   constructor(
     @InjectRepository(ProductRepository)
-    private productRepository: ProductRepository,
+    private readonly productRepository: ProductRepository,
   ) {}
 
   async execute({

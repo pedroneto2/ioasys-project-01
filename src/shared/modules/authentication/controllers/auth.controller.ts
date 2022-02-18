@@ -58,4 +58,19 @@ export class AuthController {
     req.res.setHeader('Set-Cookie', accessCookie);
     return req.user;
   }
+
+  @Get('logout')
+  @HttpCode(HttpStatus.ACCEPTED)
+  @ApiCreatedResponse({
+    description: 'successfully logged out',
+  })
+  @ApiBadRequestResponse({
+    description: 'Unauthorized',
+  })
+  async logout(@Request() req) {
+    await this.authService.removeTokensFromUser(req.user.userID);
+    const logoutCookies = this.authService.logout();
+    req.res.setHeader('Set-Cookie', logoutCookies);
+    return { message: 'successfully logged out' };
+  }
 }

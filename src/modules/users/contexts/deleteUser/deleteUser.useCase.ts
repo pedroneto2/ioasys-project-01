@@ -9,9 +9,9 @@ import { User } from '@shared/entities/user/user.entity';
 export class DeleteUserUseCase {
   constructor(
     @InjectRepository(UserRepository)
-    private userRepository: UserRepository,
+    private readonly userRepository: UserRepository,
     @Inject('ENCRYPT_PROVIDER')
-    private encryption: BcryptProvider,
+    private readonly encryption: BcryptProvider,
   ) {}
 
   async execute(id: string, password: string): Promise<User> {

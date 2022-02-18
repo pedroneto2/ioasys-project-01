@@ -11,7 +11,7 @@ import { ProductTypesRepository } from '@modules/productTypes/repository/product
 export class CreateProductTypeUseCase {
   constructor(
     @InjectRepository(ProductTypesRepository)
-    private productTypesRepository: ProductTypesRepository,
+    private readonly productTypesRepository: ProductTypesRepository,
   ) {}
 
   async execute({

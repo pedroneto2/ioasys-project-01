@@ -14,9 +14,9 @@ export class AuthService {
   constructor(
     private findUserUseCase: FindUserUseCase,
     @Inject('ENCRYPT_PROVIDER')
-    private encryption: BcryptProvider,
-    private jwtService: JwtService,
-    private tokensService: TokensService,
+    private readonly encryption: BcryptProvider,
+    private readonly jwtService: JwtService,
+    private readonly tokensService: TokensService,
   ) {}
 
   async validateUser(email: string, password: string): Promise<User | null> {
@@ -57,21 +57,26 @@ export class AuthService {
     return { accessCookie, refreshCookie };
   }
 
-  async refresh(user: User): Promise<string> {
-    const payload = {
-      userID: user.id,
-      email: user.email,
-      isAdmin: user.admin,
-    };
+  logout(): string[] {
+    return this.getLogOutCookie();
+  }
+
+  async refresh(payload: PayloadDTO): Promise<string> {
     const { accessCookie, accessToken } = await this.getAccessCookie(payload);
 
     const hashedAccessToken = this.encryption.createHash(accessToken);
 
-    await this.tokensService.updateJwtToken(user.id, hashedAccessToken);
+    await this.tokensService.updateJwtToken(payload.userID, hashedAccessToken);
 
     return accessCookie;
   }
 
+  async removeTokensFromUser(userID: string): Promise<void> {
+    await this.tokensService.deleteRefreshToken(userID);
+    await this.tokensService.deleteJwtToken(userID);
+  }
+
+  //PRIVATE METHODS
   private async getAccessCookie({ userID, email, isAdmin }: PayloadDTO) {
     const payload = { userID, email, isAdmin };
     const expirationTime = envVariables().expiresIn;
@@ -92,5 +97,12 @@ export class AuthService {
     });
     const refreshCookie = `Refresh=${refreshToken}; HttpOnly; Path=/; Max-Age=${expirationTime}`;
     return { refreshCookie, refreshToken };
+  }
+
+  private getLogOutCookie(): string[] {
+    return [
+      'Authentication=; HttpOnly; Path=/; Max-Age=0',
+      'Refresh=; HttpOnly; Path=/; Max-Age=0',
+    ];
   }
 }

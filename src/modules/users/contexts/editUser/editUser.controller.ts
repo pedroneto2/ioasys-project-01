@@ -33,9 +33,9 @@ export class EditUserController {
     @Body() editUserRequestBodyDTO: EditUserRequestBodyDTO,
     @Request() req,
   ) {
-    const { userId } = req.user;
+    const { userID } = req.user;
     const user = await this.editUserUseCase.execute(
-      userId,
+      userID,
       editUserRequestBodyDTO,
     );
     return instanceToInstance(user);

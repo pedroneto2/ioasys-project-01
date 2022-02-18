@@ -10,7 +10,7 @@ import { UserRepository } from '@modules/users/repository/user.repository';
 export class FindUserUseCase {
   constructor(
     @InjectRepository(UserRepository)
-    private userRepository: UserRepository,
+    private readonly userRepository: UserRepository,
   ) {}
 
   async findUserById(id: string): Promise<User> {

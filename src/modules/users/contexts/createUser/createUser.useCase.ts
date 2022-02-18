@@ -13,9 +13,9 @@ import { UserRepository } from '@modules/users/repository/user.repository';
 export class CreateUserUseCase {
   constructor(
     @InjectRepository(UserRepository)
-    private userRepository: UserRepository,
+    private readonly userRepository: UserRepository,
     @Inject('ENCRYPT_PROVIDER')
-    private encryption: BcryptProvider,
+    private readonly encryption: BcryptProvider,
   ) {}
 
   async execute({

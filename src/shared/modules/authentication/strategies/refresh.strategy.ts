@@ -15,8 +15,8 @@ export class RefreshStrategy extends PassportStrategy(
 ) {
   constructor(
     @Inject('ENCRYPT_PROVIDER')
-    private encryption: BcryptProvider,
-    private tokensService: TokensService,
+    private readonly encryption: BcryptProvider,
+    private readonly tokensService: TokensService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
@@ -29,7 +29,6 @@ export class RefreshStrategy extends PassportStrategy(
   }
 
   async validate(req, payload: PayloadDTO): Promise<PayloadDTO> {
-    console.log('refresh-strategy');
     const refreshToken = req?.cookies?.Refresh;
     const hashedRefreshTokenFromDB =
       await this.tokensService.findRefreshTokenById(payload.userID);
@@ -40,7 +39,6 @@ export class RefreshStrategy extends PassportStrategy(
     );
 
     if (!validRefreshToken) {
-      await this.tokensService.deleteRefreshToken(payload.userID);
       throw new UnauthorizedException();
     }
 

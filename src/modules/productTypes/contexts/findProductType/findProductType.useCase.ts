@@ -10,7 +10,7 @@ import { ProductTypesRepository } from '@modules/productTypes/repository/product
 export class FindProductTypeUseCase {
   constructor(
     @InjectRepository(ProductTypesRepository)
-    private productTypesRepository: ProductTypesRepository,
+    private readonly productTypesRepository: ProductTypesRepository,
   ) {}
 
   async findProductTypeByName(name: string): Promise<ProductType> {

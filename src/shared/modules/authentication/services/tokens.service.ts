@@ -1,16 +1,20 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  ConflictException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-
-import { JwtToken } from '@shared/entities/jwtToken/jwtToken.entity';
 
 import { SaveJwtTokenDTO } from '@shared/dtos/jwtToken/saveJwtToken.dto';
 import { TokensRepository } from '@shared/modules/authentication/repository/tokens.repository';
+
+import { requestNotCompleted } from '@shared/constants/errors';
 
 @Injectable()
 export class TokensService {
   constructor(
     @InjectRepository(TokensRepository)
-    private tokensRepository: TokensRepository,
+    private readonly tokensRepository: TokensRepository,
   ) {}
 
   async findJwtTokenById(id: string): Promise<string> {
@@ -30,21 +34,41 @@ export class TokensService {
   }
 
   async saveToken(saveJwtTokenDTO: SaveJwtTokenDTO): Promise<void> {
-    await this.tokensRepository.saveToken(saveJwtTokenDTO);
+    const response = this.tokensRepository.saveToken(saveJwtTokenDTO);
+    if (!response) {
+      throw new ConflictException(
+        requestNotCompleted('updateJwtToken:tokens.service'),
+      );
+    }
   }
 
-  async deleteJwtToken(userID: string): Promise<JwtToken | undefined> {
-    return await this.tokensRepository.deleteJwtToken(userID);
+  async deleteJwtToken(userID: string): Promise<void> {
+    const response = await this.tokensRepository.deleteJwtToken(userID);
+    if (!response) {
+      throw new ConflictException(
+        requestNotCompleted('deleteJwtToken:tokens.service'),
+      );
+    }
   }
 
-  async deleteRefreshToken(userID: string): Promise<JwtToken | undefined> {
-    return await this.tokensRepository.deleteRefreshToken(userID);
+  async deleteRefreshToken(userID: string): Promise<void> {
+    const response = await this.tokensRepository.deleteRefreshToken(userID);
+    if (!response) {
+      throw new ConflictException(
+        requestNotCompleted('deleteRefreshToken:tokens.service'),
+      );
+    }
   }
 
-  async updateJwtToken(
-    userID: string,
-    jwtToken: string,
-  ): Promise<string | undefined> {
-    return await this.tokensRepository.updateJwtToken(userID, jwtToken);
+  async updateJwtToken(userID: string, jwtToken: string): Promise<void> {
+    const response = await this.tokensRepository.updateJwtToken(
+      userID,
+      jwtToken,
+    );
+    if (!response) {
+      throw new ConflictException(
+        requestNotCompleted('updateJwtToken:tokens.service'),
+      );
+    }
   }
 }

@@ -12,3 +12,7 @@ export function unexpected(resource: string): string {
 export function softDeleted(resource: string): string {
   return `${resource}-soft-deleted`;
 }
+
+export function requestNotCompleted(resource: string): string {
+  return `Request-not-completed-in-:${resource}`;
+}

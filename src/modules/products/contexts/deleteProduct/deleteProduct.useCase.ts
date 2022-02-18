@@ -9,7 +9,7 @@ import { Product } from '@shared/entities/product/product.entity';
 export class DeleteProductUseCase {
   constructor(
     @InjectRepository(ProductRepository)
-    private productRepository: ProductRepository,
+    private readonly productRepository: ProductRepository,
   ) {}
 
   async execute(id: string): Promise<Product> {

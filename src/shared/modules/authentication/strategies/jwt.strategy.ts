@@ -12,16 +12,12 @@ import { PayloadDTO } from '@shared/dtos/authentication/payload.dto';
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     @Inject('ENCRYPT_PROVIDER')
-    private encryption: BcryptProvider,
-    private tokensService: TokensService,
+    private readonly encryption: BcryptProvider,
+    private readonly tokensService: TokensService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
-        (req) => {
-          console.log(req.cookies);
-          console.log(req.signedCookies);
-          return req.cookies;
-        },
+        (req) => req?.cookies?.Authentication,
       ]),
       ignoreExpiration: false,
       secretOrKey: envVariables().jwtSecret,
@@ -30,7 +26,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(req, payload: PayloadDTO): Promise<PayloadDTO> {
-    console.log('jwt-strategy');
     const accessToken = req?.cookies?.Authentication;
     const hashedAccessTokenFromDB = await this.tokensService.findJwtTokenById(
       payload.userID,
@@ -42,7 +37,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     );
 
     if (!validAccessToken) {
-      await this.tokensService.deleteJwtToken(payload.userID);
       throw new UnauthorizedException();
     }
 

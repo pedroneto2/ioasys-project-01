@@ -3,6 +3,7 @@ import { ConflictException, UnauthorizedException } from '@nestjs/common';
 
 import { JwtToken } from '@shared/entities/jwtToken/jwtToken.entity';
 import { SaveJwtTokenDTO } from '@shared/dtos/jwtToken/saveJwtToken.dto';
+
 import { unexpected } from '@shared/constants/errors';
 
 @EntityRepository(JwtToken)
@@ -17,10 +18,11 @@ export class TokensRepository extends Repository<JwtToken> {
 
   async deleteJwtToken(id: string): Promise<JwtToken | undefined> {
     try {
-      const response = await this.createQueryBuilder()
+      const response = await this.createQueryBuilder('jwt_tokens')
         .update<JwtToken>(JwtToken, { jwtToken: null })
-        .where('user_id = :id', { id })
-        .returning('user_id, JWT_TOKEN, REFRESH_TOKEN')
+        .where('userID = :id', { id })
+        .returning('user_id, jwt_token, refresh_token')
+        .updateEntity(true)
         .execute();
       return response.raw[0];
     } catch (error) {
@@ -30,10 +32,11 @@ export class TokensRepository extends Repository<JwtToken> {
 
   async deleteRefreshToken(id: string): Promise<JwtToken | undefined> {
     try {
-      const response = await this.createQueryBuilder()
+      const response = await this.createQueryBuilder('jwt_tokens')
         .update<JwtToken>(JwtToken, { refreshToken: null })
-        .where('user_id = :id', { id })
-        .returning('user_id, JWT_TOKEN, REFRESH_TOKEN')
+        .where('userID = :id', { id })
+        .returning('user_id, jwt_token, refresh_token')
+        .updateEntity(true)
         .execute();
       return response.raw[0];
     } catch (error) {
@@ -41,10 +44,12 @@ export class TokensRepository extends Repository<JwtToken> {
     }
   }
 
-  async saveToken(saveJwtTokenDTO: SaveJwtTokenDTO): Promise<void> {
+  async saveToken(
+    saveJwtTokenDTO: SaveJwtTokenDTO,
+  ): Promise<JwtToken | undefined> {
     try {
       const tokens = this.create(saveJwtTokenDTO);
-      await this.save(tokens);
+      return await this.save(tokens);
     } catch (error) {
       throw new ConflictException(unexpected(error.message));
     }
@@ -55,10 +60,11 @@ export class TokensRepository extends Repository<JwtToken> {
     jwtToken: string,
   ): Promise<string | undefined> {
     try {
-      const response = await this.createQueryBuilder()
+      const response = await this.createQueryBuilder('jwt_tokens')
         .update<JwtToken>(JwtToken, { jwtToken })
-        .where('user_id = :id', { id })
-        .returning('JWT_TOKEN')
+        .where('userID = :id', { id })
+        .returning('jwt_token')
+        .updateEntity(true)
         .execute();
       return response.raw[0];
     } catch (error) {
