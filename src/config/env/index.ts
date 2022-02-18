@@ -2,9 +2,13 @@ export default () => {
   return {
     nodeEnv: process.env.NODE_ENV || 'local',
 
+    domain: process.env.DOMAIN || 'localhost',
+
     port: parseInt(process.env.PORT, 10),
     expiresIn: process.env.EXPIRES_IN,
     jwtSecret: process.env.JWT_SECRET,
+    refreshSecret: process.env.REFRESH_JWT_SECRET,
+    refreshExpiresIn: process.env.REFRESH_EXPIRES_IN,
 
     dbHost: process.env.DB_HOST,
     dbPort: parseInt(process.env.DB_PORT, 5432),

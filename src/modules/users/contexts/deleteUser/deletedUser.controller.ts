@@ -33,9 +33,9 @@ export class DeleteUserController {
     @Body() passwordRequestBodyDTO: PasswordRequestBodyDTO,
     @Request() req,
   ) {
-    const { userId } = req.user;
+    const { userID } = req.user;
     const response = await this.deleteUserUseCase.execute(
-      userId,
+      userID,
       passwordRequestBodyDTO.password,
     );
     return response;

@@ -1,8 +1,9 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 import envVariables from '@config/env';
 import * as bcrypt from 'bcryptjs';
+import { v4 as uuidV4 } from 'uuid';
 
-const adminID = envVariables().adminID;
+const adminID = envVariables().adminID || uuidV4();
 const adminPassword = envVariables().adminPassword;
 const adminEmail = envVariables().adminEmail;
 

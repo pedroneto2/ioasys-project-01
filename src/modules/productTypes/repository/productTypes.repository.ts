@@ -23,7 +23,7 @@ export class ProductTypesRepository extends Repository<ProductType> {
     }
   }
 
-  async deleteProductType(name: string): Promise<ProductType> {
+  async deleteProductType(name: string): Promise<ProductType | undefined> {
     try {
       const response = await this.createQueryBuilder()
         .delete()

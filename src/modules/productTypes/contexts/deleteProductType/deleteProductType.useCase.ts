@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
+import { notFound } from '@shared/constants/errors';
 import { ProductTypesRepository } from '@modules/productTypes/repository/productTypes.repository';
 import { ProductType } from '@shared/entities/productType/productType.entity';
 
@@ -12,6 +13,12 @@ export class DeleteProductTypeUseCase {
   ) {}
 
   async execute(name: string): Promise<ProductType> {
-    return await this.productTypesRepository.deleteProductType(name);
+    const response = await this.productTypesRepository.deleteProductType(name);
+
+    if (!response) {
+      throw new ConflictException(notFound('Product-type'));
+    }
+
+    return response;
   }
 }

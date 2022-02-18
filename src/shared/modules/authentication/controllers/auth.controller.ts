@@ -1,4 +1,13 @@
-import { Controller, Request, Post, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Request,
+  Post,
+  Get,
+  UseGuards,
+  Body,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
@@ -6,8 +15,10 @@ import {
 } from '@nestjs/swagger';
 import { Public } from '@shared/decorators/isPublic.decorator';
 
+import { LoginRequestBodyDTO } from '@shared/dtos/authentication/loginRequestBody.dto';
 import { LocalAuthGuard } from '@shared/modules/authentication/guards/local-auth.guard';
 import { AuthService } from '@shared/modules/authentication/services/auth.service';
+import { RefreshTokenAuthGuard } from '@shared/modules/authentication/guards/refresh-auth.guard';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -17,13 +28,34 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Public()
   @Post('login')
+  @HttpCode(HttpStatus.ACCEPTED)
   @ApiCreatedResponse({
     description: 'successfully authenticated',
   })
   @ApiBadRequestResponse({
     description: 'Bad Request',
   })
-  async login(@Request() req) {
-    return this.authService.login(req.user);
+  async login(@Body() loginBody: LoginRequestBodyDTO, @Request() req) {
+    const { accessCookie, refreshCookie } = await this.authService.login(
+      req.user,
+    );
+    req.res.setHeader('Set-Cookie', [accessCookie, refreshCookie]);
+    return req.user;
+  }
+
+  @UseGuards(RefreshTokenAuthGuard)
+  @Public()
+  @Get('refresh')
+  @HttpCode(HttpStatus.ACCEPTED)
+  @ApiCreatedResponse({
+    description: 'successfully refreshed',
+  })
+  @ApiBadRequestResponse({
+    description: 'Unauthorized',
+  })
+  async refresh(@Request() req) {
+    const accessCookie = await this.authService.refresh(req.user);
+    req.res.setHeader('Set-Cookie', accessCookie);
+    return req.user;
   }
 }

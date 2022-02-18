@@ -8,15 +8,19 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
-  ManyToMany,
-  JoinTable,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+
+import { JwtToken } from '@shared/entities/jwtToken/jwtToken.entity';
 
 @Entity('users')
 @Unique(['email', 'cpf'])
 export class User {
   @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
+  @ManyToOne(() => JwtToken)
+  @JoinColumn({ name: 'id', referencedColumnName: 'userID' })
   public id: string;
 
   @ApiProperty()

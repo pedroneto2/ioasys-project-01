@@ -37,7 +37,7 @@ export class ProductRepository extends Repository<Product> {
     }
   }
 
-  async deleteOneById(id: string): Promise<Product> {
+  async deleteOneById(id: string): Promise<Product | undefined> {
     try {
       const response = await this.createQueryBuilder()
         .softDelete()

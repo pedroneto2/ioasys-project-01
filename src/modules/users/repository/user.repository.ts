@@ -41,7 +41,7 @@ export class UserRepository extends Repository<User> {
     }
   }
 
-  async deleteUserById(id: string): Promise<User> {
+  async deleteUserById(id: string): Promise<User | undefined> {
     try {
       const response = await this.createQueryBuilder()
         .softDelete()

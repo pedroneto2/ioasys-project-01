@@ -45,6 +45,7 @@ export class CreateUserUseCase {
       state,
       zipCode,
     });
+
     return user;
   }
 }

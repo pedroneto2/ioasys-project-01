@@ -9,7 +9,10 @@ import { TokensService } from '@shared/modules/authentication/services/tokens.se
 import { PayloadDTO } from '@shared/dtos/authentication/payload.dto';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class RefreshStrategy extends PassportStrategy(
+  Strategy,
+  'refresh-token-auth',
+) {
   constructor(
     @Inject('ENCRYPT_PROVIDER')
     private encryption: BcryptProvider,
@@ -17,32 +20,27 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
-        (req) => {
-          console.log(req.cookies);
-          console.log(req.signedCookies);
-          return req.cookies;
-        },
+        (req) => req?.cookies?.Refresh,
       ]),
       ignoreExpiration: false,
-      secretOrKey: envVariables().jwtSecret,
+      secretOrKey: envVariables().refreshSecret,
       passReqToCallback: true,
     });
   }
 
   async validate(req, payload: PayloadDTO): Promise<PayloadDTO> {
-    console.log('jwt-strategy');
-    const accessToken = req?.cookies?.Authentication;
-    const hashedAccessTokenFromDB = await this.tokensService.findJwtTokenById(
-      payload.userID,
+    console.log('refresh-strategy');
+    const refreshToken = req?.cookies?.Refresh;
+    const hashedRefreshTokenFromDB =
+      await this.tokensService.findRefreshTokenById(payload.userID);
+
+    const validRefreshToken = await this.encryption.compareHash(
+      refreshToken,
+      hashedRefreshTokenFromDB,
     );
 
-    const validAccessToken = await this.encryption.compareHash(
-      accessToken,
-      hashedAccessTokenFromDB,
-    );
-
-    if (!validAccessToken) {
-      await this.tokensService.deleteJwtToken(payload.userID);
+    if (!validRefreshToken) {
+      await this.tokensService.deleteRefreshToken(payload.userID);
       throw new UnauthorizedException();
     }
 
