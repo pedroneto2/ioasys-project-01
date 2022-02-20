@@ -35,5 +35,5 @@ export class Order {
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
-  userID: User;
+  userID: User['id'];
 }

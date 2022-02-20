@@ -19,7 +19,7 @@ export class CreateProductUseCase {
 
   async execute({
     name,
-    stock_count,
+    stockCount,
     size,
     description,
     price,
@@ -40,7 +40,7 @@ export class CreateProductUseCase {
     const newProduct = await this.productRepository.createProduct({
       id: uuidV4(),
       name,
-      stock_count,
+      stockCount,
       size,
       description,
       price,

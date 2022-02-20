@@ -23,4 +23,4 @@ import { FindProductTypeController } from '@modules/productTypes/contexts/findPr
     FindProductTypeController,
   ],
 })
-export class ProductTypesModule {}
+export class ProductTypeModule {}

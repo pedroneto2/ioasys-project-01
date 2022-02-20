@@ -7,8 +7,9 @@ import { AuthenticationModule } from '@shared/modules/authentication/authenticat
 import { AuthorizationModule } from '@shared/modules/authorization/authorization.module';
 
 import { UserModule } from '@modules/users/user.module';
-import { ProductTypesModule } from '@modules/productTypes/productTypes.module';
+import { ProductTypeModule } from '@modules/productTypes/productType.module';
 import { ProductModule } from '@modules/products/product.module';
+import { OrderModule } from '@modules/orders/order.module';
 
 import {
   WinstonModule,
@@ -36,8 +37,9 @@ import * as winston from 'winston';
     AuthenticationModule,
     AuthorizationModule,
     UserModule,
-    ProductTypesModule,
+    ProductTypeModule,
     ProductModule,
+    OrderModule,
   ],
   controllers: [],
   providers: [],

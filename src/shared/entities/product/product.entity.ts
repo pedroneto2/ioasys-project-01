@@ -57,5 +57,5 @@ export class Product {
 
   @ManyToOne(() => ProductType)
   @JoinColumn({ name: 'type' })
-  type: ProductType;
+  type: ProductType['name'];
 }

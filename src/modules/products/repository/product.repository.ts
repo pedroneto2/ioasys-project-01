@@ -67,4 +67,38 @@ export class ProductRepository extends Repository<Product> {
       throw new ConflictException(unexpected(error.message));
     }
   }
+
+  async checkProductStock(productID: string): Promise<Product> {
+    try {
+      return await this.findOne({
+        select: ['stockCount'],
+        where: { id: productID },
+      });
+    } catch (error) {
+      throw new ConflictException(unexpected(error.message));
+    }
+  }
+
+  async updateProductStock(
+    productID: string,
+    stockCount: number,
+  ): Promise<Product> {
+    try {
+      const response = await this.createQueryBuilder('products')
+        .update<Product>(Product, { stockCount })
+        .where('id = :productID', { productID })
+        .returning(['stockCount'])
+        .updateEntity(true)
+        .execute();
+      return response.raw[0];
+      // const response = await this.increment(
+      //   { id: productID },
+      //   'stockCount',
+      //   count,
+      // );
+      // return response.raw[0];
+    } catch (error) {
+      throw new ConflictException(unexpected(error.message));
+    }
+  }
 }

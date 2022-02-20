@@ -14,7 +14,7 @@ export class CreateProductRequestBodyDTO {
   @IsNumber()
   @IsNotEmpty()
   @Min(0)
-  public stock_count: number;
+  public stockCount: number;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -33,6 +33,7 @@ export class CreateProductRequestBodyDTO {
   public price: number;
 
   @ApiProperty()
+  @IsString()
   @IsNotEmpty()
-  public type: ProductType;
+  public type: ProductType['name'];
 }

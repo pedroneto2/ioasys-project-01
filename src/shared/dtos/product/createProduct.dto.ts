@@ -6,7 +6,7 @@ export class CreateProductDTO {
 
   public name: string;
 
-  public stock_count: number;
+  public stockCount: number;
 
   public size: ProducstSize;
 
@@ -14,5 +14,5 @@ export class CreateProductDTO {
 
   public price: number;
 
-  public type: ProductType;
+  public type: ProductType['name'];
 }
