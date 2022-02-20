@@ -12,7 +12,7 @@ import {
 } from 'typeorm';
 
 import { ProductType } from '@shared/entities/productType/productType.entity';
-import { ProducstSize } from '@shared/entities/product/productsSize.enum';
+import { ProductsSize } from '@shared/entities/product/productsSize.enum';
 
 @Entity('products')
 @Unique(['name'])
@@ -32,9 +32,9 @@ export class Product {
   @ApiProperty()
   @Column({
     type: 'enum',
-    enum: ProducstSize,
+    enum: ProductsSize,
   })
-  public size: ProducstSize;
+  public size: ProductsSize;
 
   @ApiProperty()
   @Column()

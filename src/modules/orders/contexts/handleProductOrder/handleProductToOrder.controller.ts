@@ -26,14 +26,14 @@ export class HandleProductToOrderController {
   ) {}
 
   @Post('handleProduct')
-  @HttpCode(HttpStatus.CREATED)
+  @HttpCode(HttpStatus.ACCEPTED)
   @ApiCreatedResponse({
     type: HandleProductToOrderResponseBodyDTO,
   })
   @ApiBadRequestResponse({
     description: 'Bad Request',
   })
-  public async create(
+  public async handleProductToOrder(
     @Body()
     handleProductToOrderRequestBodyDTO: HandleProductToOrderRequestBodyDTO,
     @Request() req,

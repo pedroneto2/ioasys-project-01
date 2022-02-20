@@ -6,8 +6,10 @@ import { OrderProductRepository } from '@modules/orders/repositories/orderProduc
 import { ProductRepository } from '@modules/products/repository/product.repository';
 
 import { HandleProductToOrderUseCase } from '@modules/orders/contexts/handleProductOrder/handleProductOrder.useCase';
+import { GetOrderDetailsUseCase } from '@modules/orders/contexts/getOrderDetails/getOrderDetails.useCase';
 
 import { HandleProductToOrderController } from '@modules/orders/contexts/handleProductOrder/handleProductToOrder.controller';
+import { GetOrderDetailsController } from '@modules/orders/contexts/getOrderDetails/getOrderDetails.controller';
 
 @Module({
   imports: [
@@ -17,7 +19,7 @@ import { HandleProductToOrderController } from '@modules/orders/contexts/handleP
       ProductRepository,
     ]),
   ],
-  providers: [HandleProductToOrderUseCase],
-  controllers: [HandleProductToOrderController],
+  providers: [HandleProductToOrderUseCase, GetOrderDetailsUseCase],
+  controllers: [HandleProductToOrderController, GetOrderDetailsController],
 })
 export class OrderModule {}

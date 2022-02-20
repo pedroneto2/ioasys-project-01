@@ -76,7 +76,9 @@ export class AuthService {
     await this.tokensService.deleteJwtToken(userID);
   }
 
-  //PRIVATE METHODS
+  // =========================================================================================
+  // PRIVATE METHODS
+  // =========================================================================================
   private async getAccessCookie({ userID, email, isAdmin }: PayloadDTO) {
     const payload = { userID, email, isAdmin };
     const expirationTime = envVariables().expiresIn;

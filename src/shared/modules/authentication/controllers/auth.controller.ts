@@ -59,6 +59,7 @@ export class AuthController {
     return req.user;
   }
 
+  @Public()
   @Get('logout')
   @HttpCode(HttpStatus.ACCEPTED)
   @ApiCreatedResponse({

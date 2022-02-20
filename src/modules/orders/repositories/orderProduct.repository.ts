@@ -5,6 +5,7 @@ import { CreateOrderProductDTO } from '@shared/dtos/orderProduct/createOrderProd
 import { unexpected } from '@shared/constants/errors';
 
 import { OrderProduct } from '@shared/entities/orderProduct/orderProduct.entity';
+import { OrderStatus } from '@shared/entities/order/orderStatus.enum';
 
 @EntityRepository(OrderProduct)
 export class OrderProductRepository extends Repository<OrderProduct> {
@@ -50,22 +51,56 @@ export class OrderProductRepository extends Repository<OrderProduct> {
     }
   }
 
-  //   async updateOrderProductQuantity(
-  //     quantity: number,
-  //     productID: string,
-  //     orderID: string,
-  //   ): Promise<OrderProduct> {
-  //     try {
-  //       const response = await this.createQueryBuilder('orders_products')
-  //         .update<OrderProduct>(OrderProduct, { quantity })
-  //         .where('productID = :productID', { productID })
-  //         .andWhere('orderID = :orderID', { orderID })
-  //         .returning(['quantity'])
-  //         .updateEntity(true)
-  //         .execute();
-  //       return response.raw[0];
-  //     } catch (error) {
-  //       throw new ConflictException(unexpected(error.message));
-  //     }
-  //   }
+  async getUserOrderDetailsInProgress(userID: string): Promise<OrderProduct[]> {
+    try {
+      const orderPrices = await this.createQueryBuilder('orders_products')
+        .leftJoin('orders_products.orderID', 'order')
+        .leftJoin('orders_products.productID', 'product')
+        .where('order.userID = :userID', { userID })
+        .andWhere('order.status = :status', {
+          status: OrderStatus.REQUEST_IN_PROGRESS,
+        })
+        .select([
+          'orders_products.quantity',
+          'product.price',
+          'product.name',
+          'product.type',
+          'product.size',
+          'product.description',
+        ])
+        .getMany();
+      return orderPrices;
+      // const orderPrices = await this.find({
+      //   relations: ['productID', 'orderID'],
+      //   where: { orderID: { userID } },
+      // });
+    } catch (error) {
+      throw new ConflictException(unexpected(error.message));
+    }
+  }
+
+  async getUserOrdersDetailsById(
+    userID: string,
+    orderID: string,
+  ): Promise<OrderProduct> {
+    try {
+      const orderDetail = await this.createQueryBuilder('orders_products')
+        .leftJoin('orders_products.orderID', 'order')
+        .leftJoin('orders_products.productID', 'product')
+        .where('order.userID = :userID', { userID })
+        .andWhere('order.id = :orderID', { orderID })
+        .select([
+          'orders_products.quantity',
+          'product.price',
+          'product.name',
+          'product.type',
+          'product.size',
+          'product.description',
+        ])
+        .getOne();
+      return orderDetail;
+    } catch (error) {
+      throw new ConflictException(unexpected(error.message));
+    }
+  }
 }

@@ -1,4 +1,4 @@
-import { ProducstSize } from '@shared/entities/product/productsSize.enum';
+import { ProductsSize } from '@shared/entities/product/productsSize.enum';
 import { ProductType } from '@shared/entities/productType/productType.entity';
 
 export class CreateProductDTO {
@@ -8,7 +8,7 @@ export class CreateProductDTO {
 
   public stockCount: number;
 
-  public size: ProducstSize;
+  public size: ProductsSize;
 
   public description: string;
 

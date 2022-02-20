@@ -43,4 +43,39 @@ export class OrderRepository extends Repository<Order> {
       throw new ConflictException(unexpected(error.message));
     }
   }
+
+  async getUserOrdersInfo(userID: string): Promise<Order[]> {
+    try {
+      const orders = await this.createQueryBuilder('orders')
+        .where('user.id = :userID', { userID })
+        .leftJoin('orders.userID', 'user')
+        .select([
+          'orders.id',
+          'orders.status',
+          'user.address',
+          'user.zipCode',
+          'user.state',
+        ])
+        .getMany();
+      return orders;
+    } catch (error) {
+      throw new ConflictException(unexpected(error.message));
+    }
+  }
+
+  async checkOutOrder(userID: string): Promise<Order> {
+    try {
+      const order = await this.createQueryBuilder('orders')
+        .update(Order)
+        .set({ status: OrderStatus.REQUEST_DONE })
+        .where('status = :status', { status: OrderStatus.REQUEST_IN_PROGRESS })
+        .andWhere('userID = :userID', { userID })
+        .returning('*')
+        .updateEntity(true)
+        .execute();
+      return order.raw[0];
+    } catch (error) {
+      throw new ConflictException(unexpected(error.message));
+    }
+  }
 }

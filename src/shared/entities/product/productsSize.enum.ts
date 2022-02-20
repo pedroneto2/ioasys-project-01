@@ -1,4 +1,4 @@
-export enum ProducstSize {
+export enum ProductsSize {
   GG = 'GG',
   G = 'G',
   M = 'M',

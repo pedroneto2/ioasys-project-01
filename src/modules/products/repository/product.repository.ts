@@ -91,12 +91,6 @@ export class ProductRepository extends Repository<Product> {
         .updateEntity(true)
         .execute();
       return response.raw[0];
-      // const response = await this.increment(
-      //   { id: productID },
-      //   'stockCount',
-      //   count,
-      // );
-      // return response.raw[0];
     } catch (error) {
       throw new ConflictException(unexpected(error.message));
     }
