@@ -12,8 +12,6 @@ import { RefreshStrategy } from '@shared/modules/authentication/strategies/refre
 import { JwtAuthGuard } from '@shared/modules/authentication/guards/jwt-auth.guard';
 
 import { AuthService } from '@shared/modules/authentication/services/auth.service';
-import { FindUserUseCase } from '@modules/users/contexts/findUser/findUser.useCase';
-import { TokensService } from '@shared/modules/authentication/services/tokens.service';
 
 import { UserRepository } from '@modules/users/repository/user.repository';
 import { TokensRepository } from '@shared/modules/authentication/repository/tokens.repository';
@@ -32,9 +30,7 @@ import { AuthController } from '@shared/modules/authentication/controllers/auth.
     { provide: 'APP_GUARD', useClass: JwtAuthGuard },
     AuthService,
     LocalStrategy,
-    FindUserUseCase,
     JwtStrategy,
-    TokensService,
     RefreshStrategy,
   ],
   controllers: [AuthController],

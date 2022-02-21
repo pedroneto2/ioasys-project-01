@@ -59,14 +59,13 @@ export class AuthController {
     return req.user;
   }
 
-  @Public()
   @Get('logout')
   @HttpCode(HttpStatus.ACCEPTED)
   @ApiCreatedResponse({
     description: 'successfully logged out',
   })
   @ApiBadRequestResponse({
-    description: 'Unauthorized',
+    description: 'not logged in',
   })
   async logout(@Request() req) {
     await this.authService.removeTokensFromUser(req.user.userID);

@@ -16,11 +16,11 @@ export class TokensRepository extends Repository<JwtToken> {
     }
   }
 
-  async deleteJwtToken(id: string): Promise<JwtToken | undefined> {
+  async deleteTokens(userID: string): Promise<JwtToken | undefined> {
     try {
       const response = await this.createQueryBuilder('jwt_tokens')
-        .update<JwtToken>(JwtToken, { jwtToken: null })
-        .where('userID = :id', { id })
+        .update<JwtToken>(JwtToken, { jwtToken: null, refreshToken: null })
+        .where('userID = :userID', { userID })
         .returning('user_id, jwt_token, refresh_token')
         .updateEntity(true)
         .execute();
@@ -30,21 +30,7 @@ export class TokensRepository extends Repository<JwtToken> {
     }
   }
 
-  async deleteRefreshToken(id: string): Promise<JwtToken | undefined> {
-    try {
-      const response = await this.createQueryBuilder('jwt_tokens')
-        .update<JwtToken>(JwtToken, { refreshToken: null })
-        .where('userID = :id', { id })
-        .returning('user_id, jwt_token, refresh_token')
-        .updateEntity(true)
-        .execute();
-      return response.raw[0];
-    } catch (error) {
-      throw new ConflictException(unexpected(error.message));
-    }
-  }
-
-  async saveToken(
+  async saveTokens(
     saveJwtTokenDTO: SaveJwtTokenDTO,
   ): Promise<JwtToken | undefined> {
     try {

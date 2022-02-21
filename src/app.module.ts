@@ -10,6 +10,7 @@ import { UserModule } from '@modules/users/user.module';
 import { ProductTypeModule } from '@modules/productTypes/productType.module';
 import { ProductModule } from '@modules/products/product.module';
 import { OrderModule } from '@modules/orders/order.module';
+import { AdminModule } from '@modules/admin/admin.module';
 
 import {
   WinstonModule,
@@ -40,6 +41,7 @@ import * as winston from 'winston';
     ProductTypeModule,
     ProductModule,
     OrderModule,
+    AdminModule,
   ],
   controllers: [],
   providers: [],

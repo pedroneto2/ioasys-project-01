@@ -2,9 +2,10 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException, Inject } from '@nestjs/common';
 import envVariables from '@config/env';
+import { InjectRepository } from '@nestjs/typeorm';
 
 import { BcryptProvider } from '@shared/providers/EncryptProvider/bcrypt.provider';
-import { TokensService } from '@shared/modules/authentication/services/tokens.service';
+import { TokensRepository } from '@shared/modules/authentication/repository/tokens.repository';
 
 import { PayloadDTO } from '@shared/dtos/authentication/payload.dto';
 
@@ -13,7 +14,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     @Inject('ENCRYPT_PROVIDER')
     private readonly encryption: BcryptProvider,
-    private readonly tokensService: TokensService,
+    @InjectRepository(TokensRepository)
+    private readonly tokensRepository: TokensRepository,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
@@ -27,9 +29,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(req, payload: PayloadDTO): Promise<PayloadDTO> {
     const accessToken = req?.cookies?.Authentication;
-    const hashedAccessTokenFromDB = await this.tokensService.findJwtTokenById(
+
+    const jwtTokens = await this.tokensRepository.findTokensByUserId(
       payload.userID,
     );
+
+    if (!jwtTokens.jwtToken) {
+      throw new UnauthorizedException();
+    }
+
+    const hashedAccessTokenFromDB = jwtTokens.jwtToken;
 
     const validAccessToken = await this.encryption.compareHash(
       accessToken,

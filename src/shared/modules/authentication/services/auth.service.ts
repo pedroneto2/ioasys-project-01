@@ -1,31 +1,42 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, ConflictException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import envVariables from '@config/env';
 
-import { FindUserUseCase } from '@modules/users/contexts/findUser/findUser.useCase';
-import { BcryptProvider } from '@shared/providers/EncryptProvider/bcrypt.provider';
 import { User } from '@shared/entities/user/user.entity';
-import { TokensService } from '@shared/modules/authentication/services/tokens.service';
 import { PayloadDTO } from '@shared/dtos/authentication/payload.dto';
 import { LoginResponseDTO } from '@shared/dtos/authentication/loginResponse.dto';
+
+import { requestNotCompleted } from '@shared/constants/errors';
+
+import { BcryptProvider } from '@shared/providers/EncryptProvider/bcrypt.provider';
+
+import { TokensRepository } from '@shared/modules/authentication/repository/tokens.repository';
+import { UserRepository } from '@modules/users/repository/user.repository';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private findUserUseCase: FindUserUseCase,
     @Inject('ENCRYPT_PROVIDER')
     private readonly encryption: BcryptProvider,
     private readonly jwtService: JwtService,
-    private readonly tokensService: TokensService,
+    @InjectRepository(TokensRepository)
+    private readonly tokensRepository: TokensRepository,
+    @InjectRepository(UserRepository)
+    private userRepository: UserRepository,
   ) {}
 
   async validateUser(email: string, password: string): Promise<User | null> {
-    const user = await this.findUserUseCase.findUserByEmail(email);
+    const user = await this.userRepository.findUserByEmail(email);
 
-    const validPassword = await this.encryption.compareHash(
-      password,
-      user.password,
-    );
+    let validPassword: boolean;
+
+    if (user) {
+      validPassword = await this.encryption.compareHash(
+        password,
+        user.password,
+      );
+    }
 
     if (user && validPassword) {
       return user;
@@ -48,11 +59,17 @@ export class AuthService {
     const hashedAccessToken = this.encryption.createHash(accessToken);
     const hashedRefresToken = this.encryption.createHash(refreshToken);
 
-    await this.tokensService.saveToken({
+    const response = await this.tokensRepository.saveTokens({
       userID: user.id,
       jwtToken: hashedAccessToken,
       refreshToken: hashedRefresToken,
     });
+
+    if (!response) {
+      throw new ConflictException(
+        requestNotCompleted('saveTokens:auth.service'),
+      );
+    }
 
     return { accessCookie, refreshCookie };
   }
@@ -66,14 +83,27 @@ export class AuthService {
 
     const hashedAccessToken = this.encryption.createHash(accessToken);
 
-    await this.tokensService.updateJwtToken(payload.userID, hashedAccessToken);
+    const response = await this.tokensRepository.updateJwtToken(
+      payload.userID,
+      hashedAccessToken,
+    );
+
+    if (!response) {
+      throw new ConflictException(
+        requestNotCompleted('updateJwtToken:auth.service'),
+      );
+    }
 
     return accessCookie;
   }
 
   async removeTokensFromUser(userID: string): Promise<void> {
-    await this.tokensService.deleteRefreshToken(userID);
-    await this.tokensService.deleteJwtToken(userID);
+    const response = await this.tokensRepository.deleteTokens(userID);
+    if (!response) {
+      throw new ConflictException(
+        requestNotCompleted('removeTokensFromUser:auth.service'),
+      );
+    }
   }
 
   // =========================================================================================

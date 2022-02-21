@@ -55,12 +55,26 @@ export class UserRepository extends Repository<User> {
     }
   }
 
-  async editUserById(userId: string, newUserData: EditUserDTO): Promise<User> {
+  async editUserById(userID: string, newUserData: EditUserDTO): Promise<User> {
     try {
       const updatedData = await this.createQueryBuilder('users')
         .update<User>(User, { ...newUserData })
-        .where('id = :id', { id: userId })
+        .where('id = :userID', { userID })
         .returning('full_name, cpf, email, address, state, zip_code')
+        .updateEntity(true)
+        .execute();
+      return updatedData.raw[0];
+    } catch (error) {
+      throw new ConflictException(unexpected(error.message));
+    }
+  }
+
+  async handleUserAdmin(userID: string, admin: boolean): Promise<User> {
+    try {
+      const updatedData = await this.createQueryBuilder('users')
+        .update<User>(User, { admin: admin })
+        .where('id = :userID', { userID })
+        .returning('full_name, cpf, email, address, state, zip_code, admin')
         .updateEntity(true)
         .execute();
       return updatedData.raw[0];
