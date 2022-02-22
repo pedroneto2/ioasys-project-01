@@ -26,7 +26,17 @@ export class UserRepository extends Repository<User> {
 
   async getAllUsers(): Promise<User[]> {
     try {
-      return await this.find();
+      return await this.find({
+        select: [
+          'id',
+          'email',
+          'admin',
+          'active',
+          'createdAt',
+          'updatedAt',
+          'deletedAt',
+        ],
+      });
     } catch (error) {
       throw new ConflictException(unexpected(error.message));
     }

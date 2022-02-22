@@ -23,6 +23,11 @@ export class CreateAdminUser1645039331848 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`DELETE FROM Users WHERE id='${adminID}';`);
+    await queryRunner.query(
+      `DELETE FROM jwt_tokens WHERE user_id = '${adminID}';
+       DELETE FROM orders_products A USING orders B WHERE A.order_id=B.id AND B.user_id = '${adminID}';
+       DELETE FROM orders WHERE user_id = '${adminID}';
+       DELETE FROM Users WHERE id='${adminID}';`,
+    );
   }
 }

@@ -40,7 +40,7 @@ export class AuthController {
       req.user,
     );
     req.res.setHeader('Set-Cookie', [accessCookie, refreshCookie]);
-    return req.user;
+    return { message: 'successfully authenticated' };
   }
 
   @UseGuards(RefreshTokenAuthGuard)
@@ -48,7 +48,7 @@ export class AuthController {
   @Get('refresh')
   @HttpCode(HttpStatus.ACCEPTED)
   @ApiCreatedResponse({
-    description: 'successfully refreshed',
+    description: 'token successfully refreshed',
   })
   @ApiBadRequestResponse({
     description: 'Unauthorized',
@@ -56,7 +56,7 @@ export class AuthController {
   async refresh(@Request() req) {
     const accessCookie = await this.authService.refresh(req.user);
     req.res.setHeader('Set-Cookie', accessCookie);
-    return req.user;
+    return { message: 'token successfully refreshed' };
   }
 
   @Get('logout')

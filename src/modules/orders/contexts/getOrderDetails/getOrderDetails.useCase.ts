@@ -1,5 +1,7 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+
+import { CryptoProvider } from '@shared/providers/EncryptProvider/crypto.provider';
 
 import { OrderRepository } from '@modules/orders/repositories/order.repository';
 import { OrderProductRepository } from '@modules/orders/repositories/orderProduct.repository';
@@ -16,6 +18,8 @@ export class GetOrderDetailsUseCase {
     @InjectRepository(OrderRepository)
     private readonly orderRepository: OrderRepository,
     private readonly orderProductRepository: OrderProductRepository,
+    @Inject('CRYPTO_PROVIDER')
+    private readonly crypto: CryptoProvider,
   ) {}
 
   async getUserOrdersInfo(userID: string): Promise<StructuredOrderInfoDTO[]> {
@@ -71,7 +75,7 @@ export class GetOrderDetailsUseCase {
           description: product.productID.description,
           price: product.productID.price,
           quantity: product.quantity,
-          subTotal: subTotal,
+          subTotal: +subTotal.toFixed(2),
         };
         structuredOrderProducts.products.push(productPrices);
         structuredOrderProducts.total += subTotal;
@@ -90,9 +94,9 @@ export class GetOrderDetailsUseCase {
       const orderInfo = {
         id: order.id,
         status: order.status,
-        address: order.userID.address,
-        state: order.userID.state,
-        zipCode: order.userID.zipCode,
+        address: this.crypto.decrypt(order.userID.address),
+        state: this.crypto.decrypt(order.userID.state),
+        zipCode: this.crypto.decrypt(order.userID.zipCode),
       };
       return orderInfo;
     });

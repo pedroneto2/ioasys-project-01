@@ -1,8 +1,7 @@
 export default () => {
   return {
-    nodeEnv: process.env.NODE_ENV || 'local',
-
-    domain: process.env.DOMAIN || 'localhost',
+    cryptoKey: process.env.CRYPTO_KEY,
+    ivHexKey: process.env.IV_HEX_KEY,
 
     port: parseInt(process.env.PORT, 10),
     expiresIn: process.env.EXPIRES_IN,

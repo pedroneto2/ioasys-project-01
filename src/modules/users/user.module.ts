@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { BcryptProvider } from '@shared/providers/EncryptProvider/bcrypt.provider';
+import { CryptoProvider } from '@shared/providers/EncryptProvider/crypto.provider';
 
 import { CreateUserController } from '@modules/users/contexts/createUser/createUser.controller';
 import { FindUserController } from '@modules/users/contexts/findUser/findUser.controller';
@@ -15,9 +16,14 @@ import { EditUserUseCase } from '@modules/users/contexts/editUser/editUser.useCa
 import { DeleteUserUseCase } from '@modules/users/contexts/deleteUser/deleteUser.useCase';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserRepository]), BcryptProvider],
+  imports: [
+    TypeOrmModule.forFeature([UserRepository]),
+    BcryptProvider,
+    CryptoProvider,
+  ],
   providers: [
     { provide: 'ENCRYPT_PROVIDER', useClass: BcryptProvider },
+    { provide: 'CRYPTO_PROVIDER', useClass: CryptoProvider },
     CreateUserUseCase,
     FindUserUseCase,
     EditUserUseCase,

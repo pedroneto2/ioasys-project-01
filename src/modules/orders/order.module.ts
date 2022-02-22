@@ -11,6 +11,8 @@ import { GetOrderDetailsUseCase } from '@modules/orders/contexts/getOrderDetails
 import { HandleProductToOrderController } from '@modules/orders/contexts/handleProductOrder/handleProductToOrder.controller';
 import { GetOrderDetailsController } from '@modules/orders/contexts/getOrderDetails/getOrderDetails.controller';
 
+import { CryptoProvider } from '@shared/providers/EncryptProvider/crypto.provider';
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -18,8 +20,13 @@ import { GetOrderDetailsController } from '@modules/orders/contexts/getOrderDeta
       OrderProductRepository,
       ProductRepository,
     ]),
+    CryptoProvider,
   ],
-  providers: [HandleProductToOrderUseCase, GetOrderDetailsUseCase],
+  providers: [
+    { provide: 'CRYPTO_PROVIDER', useClass: CryptoProvider },
+    HandleProductToOrderUseCase,
+    GetOrderDetailsUseCase,
+  ],
   controllers: [HandleProductToOrderController, GetOrderDetailsController],
 })
 export class OrderModule {}
