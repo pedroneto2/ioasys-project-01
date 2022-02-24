@@ -73,7 +73,7 @@ API documentation can be accessed through SWAGGER at: "/api/docs/"
 Database diagram can be found in the root directory: fashion-ecommerce.pdf
 ![database diagram](https://github.com/pedroneto2/ioasys-project-01/blob/master/db-diagram.JPG?raw=true "Database Diagram")
 
-## REVERT SEEDS AND MIGRATIONS
+## Revert Seeds and Migrations
 
 In order to revert seeds and migrations, you MUST execute SEED revert before MIGRATION (even if you want to revert MIGRATIONS only, once SEED is a type of MIGRATION).
 
