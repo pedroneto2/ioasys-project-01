@@ -90,6 +90,26 @@ Execute the next command the number of migration tables you have (8x):
 $ npm run typeorm migration:revert
 ```
 
+## Editing
+
+If you wish to edit something, you must transpile the code before execution:
+
+```bash
+$ npm run build
+```
+
+The code can be auto-formated:
+
+```bash
+$ npm run format
+```
+
+and ES Lint erros can be found:
+
+```bash
+$ npm run lint
+```
+
 ## Test
 
 ```bash
