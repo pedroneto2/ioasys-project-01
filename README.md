@@ -66,7 +66,8 @@ $ npm run start:prod
 
 ### Database
 
-Database scheme can be found in the root directory: fashion-ecommerce.pdf
+Database diagram can be found in the root directory: fashion-ecommerce.pdf
+![database diagram](https://github.com/pedroneto2/ioasys-project-01/blob/master/db-diagram.JPG?raw=true "Database Diagram")
 
 ## Test
 
