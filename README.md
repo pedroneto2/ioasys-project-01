@@ -64,10 +64,31 @@ $ npm run start:prod
 
 ## API Consideration
 
+### API SWAGGER
+
+API documentation can be accessed through SWAGGER at: "/api/docs/"
+
 ### Database
 
 Database diagram can be found in the root directory: fashion-ecommerce.pdf
 ![database diagram](https://github.com/pedroneto2/ioasys-project-01/blob/master/db-diagram.JPG?raw=true "Database Diagram")
+
+## REVERT SEEDS AND MIGRATIONS
+
+In order to revert seeds and migrations, you MUST execute SEED revert before MIGRATION (even if you want to revert MIGRATIONS only, once SEED is a type of MIGRATION).
+
+### Reverting seeds
+
+```bash
+$ npm run seed:revert
+```
+
+### Reverting migrations
+
+Execute the next command the number of migration tables you have (8x):
+```bash
+$ npm run typeorm migration:revert
+```
 
 ## Test
 
@@ -81,6 +102,8 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+
 
 ## Support
 
