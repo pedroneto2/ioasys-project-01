@@ -1,36 +1,52 @@
-<<<<<<< HEAD
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Fashion ecommerce back end API project 01 - **Ioasys BACK-END 2022**
+
+[Nest](https://github.com/nestjs/nest) framework TypeScript.
 
 ## Installation
 
+### Create DATABASE
+This app **MUST HAVE** a database created before follow with next installation steps.
+
+It is suggested to use the name 'fashion-ecommerce' once some configurations are setted with this name.
+
+### Setup env variables
+```bash
+DB_HOST             => HOST DATA BASE                (REQUIRED) EX: 127.0.0.1  
+DB_PORT             => HOST DATA BASE PORT           (REQUIRED) EX: 5432
+DB_USERNAME         => DATA BASE USERNAME            (REQUIRED) EX: postgres 
+DB_PASSWORD         => DATA BASE PASSWORD            (REQUIRED) EX: root
+DB_DATABASE_NAME    => DATA BASE NAME                (REQUIRED) EX: fashion-ecommerce 
+PORT                => API PORT                      (REQUIRED) EX: 3000 
+
+CRYPTO_KEY          => CRYPTOGRAPHY KEY              (REQUIRED) EX: hISH0ds8adsdh8ud
+IV_HEX_KEY          => CRYPTOGRAPHY IV KEY           (REQUIRED) EX: 9Fu890dsy83d3
+
+JWT_SECRET          => JWT TOKEN SECRET              (REQUIRED) EX: 9gS%A$5f$F$EWF4 
+EXPIRES_IN=         => JWT TOKEN EXPIRATION TIME     (REQUIRED) EX: 60s
+REFRESH_JWT_SECRET  => REFRESH TOKEN SECRET          (REQUIRED) EX: Sd9SDWE%d5w43
+REFRESH_EXPIRES_IN  => REFRESH TOKEN EXPIRATION TIME (REQUIRED) EX: 24H
+
+ADMIN_PASSWORD      => ADMIN PASSWORD                (REQUIRED) EX: admin
+ADMIN_EMAIL         => ADMIN EMAIL                   (REQUIRED) EX: admin@admin.com
+ADMIN_ID            => ADMIN USER ID                 (OPTIONAL) EX: a000-00a0-a000-0aaa000000a0
+
+ADMIN_FULL_NAME     => ADMIN FULL NAME               (OPTIONAL) EX: Joao da Silva
+ADMIN_CPF           => ADMIN CPF                     (OPTIONAL) EX: 12312312312
+```
+
+### Install dependences
 ```bash
 $ npm install
+```
+### Run migrations
+```bash
+$ npm run typeorm migration:run
+```
+### Run seeds
+```bash
+$ npm run seed:run
 ```
 
 ## Running the app
@@ -45,6 +61,12 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
+
+## API Consideration
+
+### Database
+
+Database scheme can be found in the root directory: fashion-ecommerce.pdf
 
 ## Test
 
@@ -62,16 +84,3 @@ $ npm run test:cov
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
-=======
-# ioasys-project-01
->>>>>>> 86ae041ba90ecdce48622634878b5c75cea5df8e
