@@ -10,6 +10,7 @@ import { LoginResponseDTO } from '@shared/dtos/authentication/loginResponse.dto'
 import { requestNotCompleted } from '@shared/constants/errors';
 
 import { BcryptProvider } from '@shared/providers/EncryptProvider/bcrypt.provider';
+import { CryptoProvider } from '@shared/providers/EncryptProvider/crypto.provider';
 
 import { TokensRepository } from '@shared/modules/authentication/repository/tokens.repository';
 import { UserRepository } from '@modules/users/repository/user.repository';
@@ -19,6 +20,8 @@ export class AuthService {
   constructor(
     @Inject('ENCRYPT_PROVIDER')
     private readonly encryption: BcryptProvider,
+    @Inject('CRYPTO_PROVIDER')
+    private readonly crypto: CryptoProvider,
     private readonly jwtService: JwtService,
     @InjectRepository(TokensRepository)
     private readonly tokensRepository: TokensRepository,
@@ -27,7 +30,8 @@ export class AuthService {
   ) {}
 
   async validateUser(email: string, password: string): Promise<User | null> {
-    const user = await this.userRepository.findUserByEmail(email);
+    const encryptedEmail = this.crypto.encrypt(email);
+    const user = await this.userRepository.findUserByEmail(encryptedEmail);
 
     let validPassword: boolean;
 

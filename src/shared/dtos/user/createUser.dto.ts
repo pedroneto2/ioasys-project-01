@@ -8,10 +8,4 @@ export class CreateUserDTO {
   public email: string;
 
   public password: string;
-
-  public address: string;
-
-  public state: string;
-
-  public zipCode: string;
 }

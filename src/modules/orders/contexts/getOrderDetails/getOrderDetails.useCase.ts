@@ -5,12 +5,15 @@ import { CryptoProvider } from '@shared/providers/EncryptProvider/crypto.provide
 
 import { OrderRepository } from '@modules/orders/repositories/order.repository';
 import { OrderProductRepository } from '@modules/orders/repositories/orderProduct.repository';
+import { ProductStampRepository } from '@modules/orders/repositories/productStamp.repository';
 
 import { Order } from '@shared/entities/order/order.entity';
+import { ProductStamp } from '@shared/entities/productStamp/productStamp.entity';
 
-import { StructuredOrderInfoDTO } from '@shared/dtos/order/structuredOrderInfo.dto';
 import { StructuredOrderProductDTO } from '@shared/dtos/orderProduct/structuredOrderProduct.dto';
-import { notFound, unexpected } from '@shared/constants/errors';
+import { structuredOrderProductStampDTO } from '@shared/dtos/order/structuredOrderProductsStamp.dto';
+
+import { unexpected } from '@shared/constants/errors';
 
 @Injectable()
 export class GetOrderDetailsUseCase {
@@ -18,16 +21,17 @@ export class GetOrderDetailsUseCase {
     @InjectRepository(OrderRepository)
     private readonly orderRepository: OrderRepository,
     private readonly orderProductRepository: OrderProductRepository,
+    private readonly productStampRepository: ProductStampRepository,
     @Inject('CRYPTO_PROVIDER')
     private readonly crypto: CryptoProvider,
   ) {}
 
-  async getUserOrdersInfo(userID: string): Promise<StructuredOrderInfoDTO[]> {
+  async getUserOrdersInfo(userID: string): Promise<Order[]> {
     const ordersInfo = await this.orderRepository.getUserOrdersInfo(userID);
     return this.structuredOrderInfo(ordersInfo);
   }
 
-  async getUserOrderPricesInProgress(
+  async getUserOrderDetailsInProgress(
     userID: string,
   ): Promise<StructuredOrderProductDTO> {
     const orderProducts =
@@ -35,25 +39,16 @@ export class GetOrderDetailsUseCase {
     return this.structureOrderProduct(orderProducts);
   }
 
-  async getUserOrdersDetailsById(
+  async getOrderProductsStamp(
     userID: string,
     orderID: string,
-  ): Promise<StructuredOrderProductDTO> {
-    const orderProduct =
-      await this.orderProductRepository.getUserOrdersDetailsById(
+  ): Promise<structuredOrderProductStampDTO> {
+    const productsStamp =
+      await this.productStampRepository.retrieveProductStampsFromOrder(
         userID,
         orderID,
       );
-    const orderProductArray = orderProduct ? [orderProduct] : [];
-    return this.structureOrderProduct(orderProductArray);
-  }
-
-  async checkOutOrder(userID: string): Promise<Order> {
-    const order = await this.orderRepository.checkOutOrder(userID);
-    if (!order) {
-      throw new ConflictException(notFound('Order-in-progress'));
-    }
-    return order;
+    return this.structureOrderProductsStamp(productsStamp);
   }
 
   // =========================================================================================
@@ -68,16 +63,16 @@ export class GetOrderDetailsUseCase {
       };
       orderProducts.forEach((product) => {
         const subTotal = product.productID.price * product.quantity;
-        const productPrices = {
+        const productDetails = {
           name: product.productID.name,
-          type: product.productID.type,
+          type: product.productID.type.name,
           size: product.productID.size,
           description: product.productID.description,
           price: product.productID.price,
           quantity: product.quantity,
           subTotal: +subTotal.toFixed(2),
         };
-        structuredOrderProducts.products.push(productPrices);
+        structuredOrderProducts.products.push(productDetails);
         structuredOrderProducts.total += subTotal;
       });
       structuredOrderProducts.total = +structuredOrderProducts.total.toFixed(2);
@@ -89,16 +84,22 @@ export class GetOrderDetailsUseCase {
     }
   }
 
-  private structuredOrderInfo(ordersInfo): StructuredOrderInfoDTO[] {
-    return ordersInfo.map((order) => {
-      const orderInfo = {
-        id: order.id,
-        status: order.status,
-        address: this.crypto.decrypt(order.userID.address),
-        state: this.crypto.decrypt(order.userID.state),
-        zipCode: this.crypto.decrypt(order.userID.zipCode),
-      };
-      return orderInfo;
+  private structuredOrderInfo(ordersInfo: Order[]): Order[] {
+    return ordersInfo.map((order: Order) => {
+      const orderInfo = { ...order };
+      return this.crypto.decryptOrder(orderInfo);
     });
+  }
+
+  private structureOrderProductsStamp(
+    productsStamp: ProductStamp[],
+  ): structuredOrderProductStampDTO {
+    const response = { products: productsStamp, total: '0' };
+    let total = 0;
+    productsStamp.forEach((productStamp) => {
+      total += +productStamp.subTotal;
+    });
+    response.total = total.toFixed(2);
+    return response;
   }
 }

@@ -40,16 +40,10 @@ export class User {
   public password: string;
 
   @ApiProperty()
-  @Column()
-  public address: string;
-
-  @ApiProperty()
-  @Column()
-  public state: string;
-
-  @ApiProperty()
-  @Column({ name: 'zip_code' })
-  public zipCode: string;
+  // typeorm can't direct retrieve values with FK link : 'https://typeorm.io/#/relations-faq/how-to-use-relation-id-without-joining-relation'
+  // Therfore, I decided to remove this one to one link from typeORM
+  @Column({ name: 'default_address_id' })
+  public defaultAddressID: string;
 
   @ApiProperty()
   @Column()

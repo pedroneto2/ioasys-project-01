@@ -36,23 +36,4 @@ export class CreateUserRequestBodyDTO {
   @Length(8, 50)
   @Matches(PASSWORD_REGEX, { message: 'password-is-too-weak' })
   public password: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  @Length(6, 50)
-  public address: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  @Length(2, 50)
-  public state: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  @Length(8, 8)
-  @IsNumberString()
-  public zipCode: string;
 }

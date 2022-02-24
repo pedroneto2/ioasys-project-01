@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Get,
   Post,
   HttpCode,
   HttpStatus,
@@ -20,6 +19,7 @@ import { AdminRoute } from '@shared/decorators/adminRoute.decorator';
 
 import { GetUserByEmailDTO } from '@shared/dtos/user/getUserByEmail.dto';
 import { GetUserByIdDTO } from '@shared/dtos/user/getUserById.dto';
+import { PasswordRequestBodyDTO } from '@shared/dtos/user/passwordRequestBody.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -73,7 +73,7 @@ export class FindUserController {
   }
 
   @AdminRoute()
-  @Get('getAll')
+  @Post('getAll')
   @HttpCode(HttpStatus.FOUND)
   @ApiCreatedResponse({
     type: [User],
@@ -81,8 +81,13 @@ export class FindUserController {
   @ApiBadRequestResponse({
     description: 'Unauthorized',
   })
-  public async getAll() {
-    const users = await this.findUserUseCase.getAllUsers();
+  public async getAll(
+    @Body() passwordBody: PasswordRequestBodyDTO,
+    @Request() req,
+  ) {
+    const adminID = req.user.userID;
+    const { password } = passwordBody;
+    const users = await this.findUserUseCase.getAllUsers(adminID, password);
     return instanceToInstance(users);
   }
 }

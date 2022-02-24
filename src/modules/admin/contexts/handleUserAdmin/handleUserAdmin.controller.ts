@@ -12,7 +12,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { ConvertUserToAdminDTO } from '@shared/dtos/admin/convertUserToAdmin.dto';
+import { ConvertUserToAdminRequestBodyDTO } from '@shared/dtos/admin/convertUserToAdminRequestBody.dto';
 import { instanceToInstance } from 'class-transformer';
 import { HandleUserAdminUseCase } from '@modules/admin/contexts/handleUserAdmin/handleUserAdmin.useCase';
 
@@ -27,13 +27,13 @@ export class ConvertUserToAdminUserController {
   @Post('/handleUserAdmin')
   @HttpCode(HttpStatus.OK)
   @ApiCreatedResponse({
-    type: ConvertUserToAdminDTO,
+    type: ConvertUserToAdminRequestBodyDTO,
   })
   @ApiBadRequestResponse({
     description: 'Unauthorized',
   })
   public async convertUserToAdmin(
-    @Body() { userID, password, isAdmin }: ConvertUserToAdminDTO,
+    @Body() { userID, password, isAdmin }: ConvertUserToAdminRequestBodyDTO,
     @Request() req,
   ) {
     const adminID = req.user.userID;

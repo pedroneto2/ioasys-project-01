@@ -8,6 +8,12 @@ export class OrdersTable1644699052792 implements MigrationInterface {
             id varchar(255) PRIMARY KEY,
             user_id varchar(255) REFERENCES Users(id),
             status status_type,
+            client_name varchar(255),
+            client_cpf varchar(255),
+            price varchar(150),
+            address varchar(255),
+            state varchar(255),
+            zip_code varchar(255),
             created_at timestamp DEFAULT CURRENT_TIMESTAMP,
             updated_at timestamp DEFAULT CURRENT_TIMESTAMP
         );`);

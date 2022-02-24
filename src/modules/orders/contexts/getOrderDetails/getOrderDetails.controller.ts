@@ -24,7 +24,7 @@ import { GetOrderDetailsUseCase } from '@modules/orders/contexts/getOrderDetails
 export class GetOrderDetailsController {
   constructor(private getOrderDetailsUseCase: GetOrderDetailsUseCase) {}
 
-  @Get('getOrdersInfo')
+  @Get('get-orders-info')
   @HttpCode(HttpStatus.OK)
   @ApiCreatedResponse({
     type: [Order],
@@ -39,7 +39,7 @@ export class GetOrderDetailsController {
     return instanceToInstance(response);
   }
 
-  @Get('getOrderDetails')
+  @Get('get-order-details')
   @HttpCode(HttpStatus.OK)
   @ApiCreatedResponse({
     type: StructuredOrderProductDTO,
@@ -47,15 +47,15 @@ export class GetOrderDetailsController {
   @ApiBadRequestResponse({
     description: 'Bad Request',
   })
-  public async getOrderPricesInProgress(@Request() req) {
+  public async getOrderDetailsInProgress(@Request() req) {
     const response =
-      await this.getOrderDetailsUseCase.getUserOrderPricesInProgress(
+      await this.getOrderDetailsUseCase.getUserOrderDetailsInProgress(
         req.user.userID,
       );
     return instanceToInstance(response);
   }
 
-  @Get('getOrderDetailsByOrderId/:orderID')
+  @Get('get-order-details/checked-out/:orderID')
   @HttpCode(HttpStatus.OK)
   @ApiCreatedResponse({
     type: StructuredOrderProductDTO,
@@ -63,29 +63,15 @@ export class GetOrderDetailsController {
   @ApiBadRequestResponse({
     description: 'Bad Request',
   })
-  public async getOrderDetails(
+  public async getCheckedOutOrderDetailsInProgress(
     @Param('orderID') orderID: string,
     @Request() req,
   ) {
-    const response = await this.getOrderDetailsUseCase.getUserOrdersDetailsById(
-      req.user.userID,
-      orderID,
-    );
-    return instanceToInstance(response);
-  }
-
-  @Get('checkOutOrderInProgress')
-  @HttpCode(HttpStatus.OK)
-  @ApiCreatedResponse({
-    type: Order,
-  })
-  @ApiBadRequestResponse({
-    description: 'Bad Request',
-  })
-  public async checkOut(@Request() req) {
-    const response = await this.getOrderDetailsUseCase.checkOutOrder(
-      req.user.userID,
-    );
-    return instanceToInstance(response);
+    const productsStamp =
+      await this.getOrderDetailsUseCase.getOrderProductsStamp(
+        req.user.userID,
+        orderID,
+      );
+    return instanceToInstance(productsStamp);
   }
 }

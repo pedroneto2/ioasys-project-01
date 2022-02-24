@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { BcryptProvider } from '@shared/providers/EncryptProvider/bcrypt.provider';
+import { CryptoProvider } from '@shared/providers/EncryptProvider/crypto.provider';
 
 import { ConvertUserToAdminUserController } from '@modules/admin/contexts/handleUserAdmin/handleUserAdmin.controller';
 import { DisconnectUserController } from '@modules/admin/contexts/disconnectUser/disconnectUser.controller';
@@ -19,6 +20,7 @@ import { DisconnectUserUseCase } from '@modules/admin/contexts/disconnectUser/di
   ],
   providers: [
     { provide: 'ENCRYPT_PROVIDER', useClass: BcryptProvider },
+    { provide: 'CRYPTO_PROVIDER', useClass: CryptoProvider },
     HandleUserAdminUseCase,
     DisconnectUserUseCase,
   ],

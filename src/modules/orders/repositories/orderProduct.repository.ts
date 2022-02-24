@@ -56,6 +56,7 @@ export class OrderProductRepository extends Repository<OrderProduct> {
       const orderPrices = await this.createQueryBuilder('orders_products')
         .leftJoin('orders_products.orderID', 'order')
         .leftJoin('orders_products.productID', 'product')
+        .leftJoin('product.type', 'type')
         .where('order.userID = :userID', { userID })
         .andWhere('order.status = :status', {
           status: OrderStatus.REQUEST_IN_PROGRESS,
@@ -64,41 +65,12 @@ export class OrderProductRepository extends Repository<OrderProduct> {
           'orders_products.quantity',
           'product.price',
           'product.name',
-          'product.type',
+          'type.name',
           'product.size',
           'product.description',
         ])
         .getMany();
       return orderPrices;
-      // const orderPrices = await this.find({
-      //   relations: ['productID', 'orderID'],
-      //   where: { orderID: { userID } },
-      // });
-    } catch (error) {
-      throw new ConflictException(unexpected(error.message));
-    }
-  }
-
-  async getUserOrdersDetailsById(
-    userID: string,
-    orderID: string,
-  ): Promise<OrderProduct> {
-    try {
-      const orderDetail = await this.createQueryBuilder('orders_products')
-        .leftJoin('orders_products.orderID', 'order')
-        .leftJoin('orders_products.productID', 'product')
-        .where('order.userID = :userID', { userID })
-        .andWhere('order.id = :orderID', { orderID })
-        .select([
-          'orders_products.quantity',
-          'product.price',
-          'product.name',
-          'product.type',
-          'product.size',
-          'product.description',
-        ])
-        .getOne();
-      return orderDetail;
     } catch (error) {
       throw new ConflictException(unexpected(error.message));
     }

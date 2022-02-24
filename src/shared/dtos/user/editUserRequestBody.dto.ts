@@ -25,23 +25,4 @@ export class EditUserRequestBodyDTO {
   @IsEmail()
   @IsOptional()
   public email: string;
-
-  @ApiProperty()
-  @IsString()
-  @Length(6, 50)
-  @IsOptional()
-  public address: string;
-
-  @ApiProperty()
-  @IsString()
-  @Length(2, 50)
-  @IsOptional()
-  public state: string;
-
-  @ApiProperty()
-  @IsString()
-  @Length(8, 8)
-  @IsOptional()
-  @IsNumberString()
-  public zipCode: string;
 }

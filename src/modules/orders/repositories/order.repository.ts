@@ -47,15 +47,10 @@ export class OrderRepository extends Repository<Order> {
   async getUserOrdersInfo(userID: string): Promise<Order[]> {
     try {
       const orders = await this.createQueryBuilder('orders')
-        .where('user.id = :userID', { userID })
-        .leftJoin('orders.userID', 'user')
-        .select([
-          'orders.id',
-          'orders.status',
-          'user.address',
-          'user.zipCode',
-          'user.state',
-        ])
+        .where('orders.userID = :userID', { userID })
+        .andWhere('orders.status != :status', {
+          status: OrderStatus.REQUEST_IN_PROGRESS,
+        })
         .getMany();
       return orders;
     } catch (error) {
@@ -63,11 +58,27 @@ export class OrderRepository extends Repository<Order> {
     }
   }
 
-  async checkOutOrder(userID: string): Promise<Order> {
+  async checkOutOrder(
+    userID: string,
+    clientName: string,
+    clientCPF: string,
+    price: string,
+    address: string,
+    state: string,
+    zipCode: string,
+  ): Promise<Order> {
     try {
       const order = await this.createQueryBuilder('orders')
         .update(Order)
-        .set({ status: OrderStatus.REQUEST_DONE })
+        .set({
+          status: OrderStatus.REQUEST_DONE,
+          clientName,
+          clientCPF,
+          price,
+          address,
+          state,
+          zipCode,
+        })
         .where('status = :status', { status: OrderStatus.REQUEST_IN_PROGRESS })
         .andWhere('userID = :userID', { userID })
         .returning('*')

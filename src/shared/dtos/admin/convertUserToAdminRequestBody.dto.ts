@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsBoolean, Length } from 'class-validator';
 
-export class ConvertUserToAdminDTO {
+export class ConvertUserToAdminRequestBodyDTO {
   @ApiProperty()
   @IsString()
   @Length(3, 50)

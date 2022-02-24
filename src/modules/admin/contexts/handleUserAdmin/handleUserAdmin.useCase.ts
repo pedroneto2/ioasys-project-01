@@ -7,6 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { BcryptProvider } from '@shared/providers/EncryptProvider/bcrypt.provider';
+import { CryptoProvider } from '@shared/providers/EncryptProvider/crypto.provider';
 
 import { TokensRepository } from '@shared/modules/authentication/repository/tokens.repository';
 import { UserRepository } from '@modules/users/repository/user.repository';
@@ -23,6 +24,8 @@ export class HandleUserAdminUseCase {
     private readonly tokensRepository: TokensRepository,
     @Inject('ENCRYPT_PROVIDER')
     private readonly encryption: BcryptProvider,
+    @Inject('CRYPTO_PROVIDER')
+    private readonly crypto: CryptoProvider,
   ) {}
 
   async convertUserToAdmin(
@@ -55,7 +58,19 @@ export class HandleUserAdminUseCase {
         );
       }
     }
+    this.handleRawKeys(user, 'fullName', 'full_name');
+    return this.crypto.decryptUser(user);
+  }
 
-    return user;
+  // =========================================================================================
+  // PRIVATE METHODS
+  // =========================================================================================
+  private handleRawKeys(object, newKey: string, oldKey: string) {
+    Object.defineProperty(
+      object,
+      newKey,
+      Object.getOwnPropertyDescriptor(object, oldKey),
+    );
+    delete object[oldKey];
   }
 }

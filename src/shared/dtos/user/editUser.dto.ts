@@ -4,10 +4,4 @@ export class EditUserDTO {
   public cpf?: string;
 
   public email?: string;
-
-  public address?: string;
-
-  public state?: string;
-
-  public zipCode?: string;
 }

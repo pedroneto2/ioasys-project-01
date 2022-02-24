@@ -26,9 +26,6 @@ export class CreateUserUseCase {
     cpf,
     email,
     password,
-    address,
-    state,
-    zipCode,
   }: CreateUserRequestBodyDTO): Promise<User> {
     const savedUser = await this.userRepository.findUserByEmail(email);
 
@@ -42,11 +39,8 @@ export class CreateUserUseCase {
       id: uuidV4(),
       fullName: this.crypto.encrypt(fullName),
       cpf: this.crypto.encrypt(cpf),
-      email: email,
+      email: this.crypto.encrypt(email),
       password: hashedPassword,
-      address: this.crypto.encrypt(address),
-      state: this.crypto.encrypt(state),
-      zipCode: this.crypto.encrypt(zipCode),
     });
 
     return this.crypto.decryptUser(user);

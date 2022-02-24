@@ -26,6 +26,30 @@ export class Order {
   public status: OrderStatus;
 
   @ApiProperty()
+  @Column({ name: 'client_name' })
+  public clientName: string;
+
+  @ApiProperty()
+  @Column({ name: 'client_cpf' })
+  public clientCPF: string;
+
+  @ApiProperty()
+  @Column()
+  public price: string;
+
+  @ApiProperty()
+  @Column()
+  public address: string;
+
+  @ApiProperty()
+  @Column()
+  public state: string;
+
+  @ApiProperty()
+  @Column({ name: 'zip_code' })
+  public zipCode: string;
+
+  @ApiProperty()
   @CreateDateColumn({ name: 'created_at' })
   public createdAt: Date;
 

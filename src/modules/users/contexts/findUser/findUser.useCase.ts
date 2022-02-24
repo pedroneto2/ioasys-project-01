@@ -48,7 +48,9 @@ export class FindUserUseCase {
   ): Promise<User> {
     await this.checkAdminCredentials(adminID, password);
 
-    const user = await this.userRepository.findUserByEmail(email);
+    const encryptedEmail = this.crypto.encrypt(email);
+
+    const user = await this.userRepository.findUserByEmail(encryptedEmail);
 
     if (!user) {
       throw new ConflictException(notFound('User'));
@@ -57,9 +59,13 @@ export class FindUserUseCase {
     return this.crypto.decryptUser(user);
   }
 
-  async getAllUsers(): Promise<User[]> {
+  async getAllUsers(adminID: string, password: string): Promise<User[]> {
+    await this.checkAdminCredentials(adminID, password);
     const users = await this.userRepository.getAllUsers();
-    return users;
+    return users.map((user) => ({
+      ...user,
+      email: this.crypto.decrypt(user.email),
+    }));
   }
 
   // =========================================================================================

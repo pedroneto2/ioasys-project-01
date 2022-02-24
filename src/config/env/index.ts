@@ -20,8 +20,5 @@ export default () => {
     adminEmail: process.env.ADMIN_EMAIL,
     adminFullName: process.env.ADMIN_FULL_NAME,
     adminCPF: process.env.ADMIN_CPF,
-    adminAdress: process.env.ADMIN_ADDRESS,
-    adminState: process.env.ADMIN_STATE,
-    adminZipCode: process.env.ADMIN_ZIP_CODE,
   };
 };

@@ -3,7 +3,7 @@ import { ConflictException } from '@nestjs/common';
 
 import { CreateProductDTO } from '@shared/dtos/product/createProduct.dto';
 import { Product } from '@shared/entities/product/product.entity';
-import { unexpected } from '@shared/constants/errors';
+import { notFound, unexpected } from '@shared/constants/errors';
 
 @EntityRepository(Product)
 export class ProductRepository extends Repository<Product> {
@@ -64,6 +64,9 @@ export class ProductRepository extends Repository<Product> {
       const product = this.create(createProductDTO);
       return await this.save(product);
     } catch (error) {
+      if (/violates foreign key/gi.test(error.message)) {
+        throw new ConflictException(notFound('Type'));
+      }
       throw new ConflictException(unexpected(error.message));
     }
   }

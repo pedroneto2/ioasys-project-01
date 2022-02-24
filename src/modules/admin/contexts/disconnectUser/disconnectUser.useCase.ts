@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { TokensRepository } from '@shared/modules/authentication/repository/tokens.repository';
 
-import { requestNotCompleted } from '@shared/constants/errors';
+import { notFound } from '@shared/constants/errors';
 
 @Injectable()
 export class DisconnectUserUseCase {
@@ -15,9 +15,7 @@ export class DisconnectUserUseCase {
   async execute(userID: string): Promise<boolean> {
     const response = await this.tokensRepository.deleteTokens(userID);
     if (!response) {
-      throw new ConflictException(
-        requestNotCompleted('execute:disconnectUserUseCase'),
-      );
+      throw new ConflictException(notFound('User'));
     }
     return true;
   }

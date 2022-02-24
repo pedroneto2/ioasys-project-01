@@ -11,6 +11,7 @@ import { ProductTypeModule } from '@modules/productTypes/productType.module';
 import { ProductModule } from '@modules/products/product.module';
 import { OrderModule } from '@modules/orders/order.module';
 import { AdminModule } from '@modules/admin/admin.module';
+import { AddressModule } from '@modules/address/address.module';
 
 import {
   WinstonModule,
@@ -42,6 +43,7 @@ import * as winston from 'winston';
     ProductModule,
     OrderModule,
     AdminModule,
+    AddressModule,
   ],
   controllers: [],
   providers: [],

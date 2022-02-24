@@ -8,12 +8,14 @@ import { CreateUserController } from '@modules/users/contexts/createUser/createU
 import { FindUserController } from '@modules/users/contexts/findUser/findUser.controller';
 import { EditUserController } from '@modules/users/contexts/editUser/editUser.controller';
 import { DeleteUserController } from '@modules/users/contexts/deleteUser/deletedUser.controller';
+import { SetDefaultAddressController } from '@modules/users/contexts/setDefaultAddress/setDefaultAddress.controller';
 
 import { CreateUserUseCase } from '@modules/users/contexts/createUser/createUser.useCase';
 import { FindUserUseCase } from '@modules/users/contexts/findUser/findUser.useCase';
 import { UserRepository } from '@modules/users/repository/user.repository';
 import { EditUserUseCase } from '@modules/users/contexts/editUser/editUser.useCase';
 import { DeleteUserUseCase } from '@modules/users/contexts/deleteUser/deleteUser.useCase';
+import { SetDefaultAddressUseCase } from '@modules/users/contexts/setDefaultAddress/setDefaultAddress.useCase';
 
 @Module({
   imports: [
@@ -28,12 +30,14 @@ import { DeleteUserUseCase } from '@modules/users/contexts/deleteUser/deleteUser
     FindUserUseCase,
     EditUserUseCase,
     DeleteUserUseCase,
+    SetDefaultAddressUseCase,
   ],
   controllers: [
     CreateUserController,
     FindUserController,
     EditUserController,
     DeleteUserController,
+    SetDefaultAddressController,
   ],
 })
 export class UserModule {}
