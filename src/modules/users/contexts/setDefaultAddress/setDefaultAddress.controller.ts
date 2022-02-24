@@ -20,7 +20,7 @@ import { SetDefaultAddressUseCase } from '@modules/users/contexts/setDefaultAddr
 export class SetDefaultAddressController {
   constructor(private setDefaultAddressUseCase: SetDefaultAddressUseCase) {}
 
-  @Get('defaultAddress/:addressID')
+  @Get('default-address/:addressID')
   @HttpCode(HttpStatus.ACCEPTED)
   @ApiCreatedResponse({
     type: Boolean,
@@ -40,7 +40,7 @@ export class SetDefaultAddressController {
     return instanceToInstance(response);
   }
 
-  @Get('remove-defaultAddress')
+  @Get('remove-default-address')
   @HttpCode(HttpStatus.ACCEPTED)
   @ApiCreatedResponse({
     type: Boolean,

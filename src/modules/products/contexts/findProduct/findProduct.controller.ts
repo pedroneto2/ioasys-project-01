@@ -10,6 +10,7 @@ import { instanceToInstance } from 'class-transformer';
 
 import { FindProductUseCase } from '@modules/products/contexts/findProduct/findProduct.useCase';
 import { AdminRoute } from '@shared/decorators/adminRoute.decorator';
+import { Public } from '@shared/decorators/isPublic.decorator';
 
 @ApiTags('Products')
 @Controller('products')
@@ -17,7 +18,7 @@ export class FindProductController {
   constructor(private findProductUseCase: FindProductUseCase) {}
 
   @AdminRoute()
-  @Get('findOne/:name')
+  @Get('find-one/:name')
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({
     type: Product,
@@ -31,7 +32,7 @@ export class FindProductController {
   }
 
   @AdminRoute()
-  @Get('getAll')
+  @Get('get-all')
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({
     type: [Product],
@@ -41,6 +42,20 @@ export class FindProductController {
   })
   public async getAll() {
     const products = await this.findProductUseCase.getAllProducts();
+    return instanceToInstance(products);
+  }
+
+  @Public()
+  @Get('products-show-case')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiCreatedResponse({
+    type: [Product],
+  })
+  @ApiBadRequestResponse({
+    description: 'Unauthorized',
+  })
+  public async productsShowCase() {
+    const products = await this.findProductUseCase.productsShowCase();
     return instanceToInstance(products);
   }
 }

@@ -14,7 +14,7 @@ export class DisconnectUserController {
   constructor(private disconnectUserUseCase: DisconnectUserUseCase) {}
 
   @AdminRoute()
-  @Get('/disconnectUser/:userID')
+  @Get('/disconnect-user/:userID')
   @HttpCode(HttpStatus.OK)
   @ApiCreatedResponse({
     type: Boolean,

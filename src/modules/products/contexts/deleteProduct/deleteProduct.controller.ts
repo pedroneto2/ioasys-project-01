@@ -17,7 +17,7 @@ export class DeleteProductController {
   constructor(private deleteProductUseCase: DeleteProductUseCase) {}
 
   @AdminRoute()
-  @Get('deleteOne/:id')
+  @Get('delete-one/:id')
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({
     type: Product,

@@ -98,4 +98,14 @@ export class ProductRepository extends Repository<Product> {
       throw new ConflictException(unexpected(error.message));
     }
   }
+
+  async productsShowCase(): Promise<Product[]> {
+    try {
+      return await this.find({
+        select: ['id', 'name', 'type', 'size', 'description', 'price'],
+      });
+    } catch (error) {
+      throw new ConflictException(unexpected(error.message));
+    }
+  }
 }

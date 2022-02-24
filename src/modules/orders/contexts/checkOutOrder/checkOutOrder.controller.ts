@@ -23,7 +23,7 @@ import { CheckOutOrderUseCase } from '@modules/orders/contexts/checkOutOrder/che
 export class CheckOutOrderController {
   constructor(private checkOutOrderUseCase: CheckOutOrderUseCase) {}
 
-  @Post('checkOutOrderInProgress')
+  @Post('check-out-order-in-progress')
   @HttpCode(HttpStatus.OK)
   @ApiCreatedResponse({
     type: Order,

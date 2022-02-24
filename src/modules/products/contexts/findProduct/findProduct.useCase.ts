@@ -26,4 +26,8 @@ export class FindProductUseCase {
   async getAllProducts(): Promise<Product[]> {
     return await this.productRepository.getAllProducts();
   }
+
+  async productsShowCase(): Promise<Product[]> {
+    return await this.productRepository.productsShowCase();
+  }
 }

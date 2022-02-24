@@ -27,7 +27,7 @@ export class FindUserController {
   constructor(private findUserUseCase: FindUserUseCase) {}
 
   @AdminRoute()
-  @Post('getOne/byId')
+  @Post('get-one/byID')
   @HttpCode(HttpStatus.FOUND)
   @ApiCreatedResponse({
     type: User,
@@ -50,7 +50,7 @@ export class FindUserController {
   }
 
   @AdminRoute()
-  @Post('getOne/byEmail')
+  @Post('get-one/byEmail')
   @HttpCode(HttpStatus.FOUND)
   @ApiCreatedResponse({
     type: User,
@@ -73,7 +73,7 @@ export class FindUserController {
   }
 
   @AdminRoute()
-  @Post('getAll')
+  @Post('get-all')
   @HttpCode(HttpStatus.FOUND)
   @ApiCreatedResponse({
     type: [User],

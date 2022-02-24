@@ -24,7 +24,7 @@ export class ConvertUserToAdminUserController {
   constructor(private handleUserAdminUseCase: HandleUserAdminUseCase) {}
 
   @AdminRoute()
-  @Post('/handleUserAdmin')
+  @Post('/handle-user-admin')
   @HttpCode(HttpStatus.OK)
   @ApiCreatedResponse({
     type: ConvertUserToAdminRequestBodyDTO,

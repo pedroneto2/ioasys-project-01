@@ -25,7 +25,7 @@ export class HandleProductToOrderController {
     private handleProductToOrderUseCase: HandleProductToOrderUseCase,
   ) {}
 
-  @Post('handleProduct')
+  @Post('handle-product')
   @HttpCode(HttpStatus.ACCEPTED)
   @ApiCreatedResponse({
     type: HandleProductToOrderResponseBodyDTO,
