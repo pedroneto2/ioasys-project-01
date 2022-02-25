@@ -68,6 +68,26 @@ $ npm run start:prod
 
 API documentation can be accessed through SWAGGER at: "/api/docs/"
 
+### API WORK FLOW
+
+- log in with admin account (AUTH SESSION) created with SEED;
+- create one or more product type (PRODUCT TYPES SESSION);
+- create one or more product (PRODUCTS SESSION);
+- create a user account (USERS SESSION) and log in;
+- create one or more address (ADDRESSESS SESSION);
+- you can set a default address for your user (USER SESSION). It is optional;
+- add products to your order in progress at 'handle-product' (ORDERS SESSION). You can set negative ammounts in order to remove products. You can see the list of products and its IDs at 'products-show-case' (PRODUCTS SESSION);
+- you can check your order in progress details at 'get-order-details' (ORDERS SESSION);
+- once you finished to select your products, you can check out your order at 'check-out-order-in-progress' and then its status will be changed from 'request_in_progress' to 'request_done'. If you did not set a default address, you must provide a address ID you registered. If you have setted a default address, provide an address ID is optional;
+- you can see your "NOT in progress" orders at 'get-orders-info' and check its detail through 'get-order-details/checked-out'.
+
+some addition features:
+- admins can disconnect a user (ADMIN SESSION);
+- admins can convert normal users to admins (ADMIN SESSION);
+- admins can see a list with all users (USERS SESSIONS);
+- admins can see users details (USERS SESSIONS);
+- It is highly recomended to set a small expiration time for JWT_TOKEN (60 seconds for example) and then provide a higher expiration time for REFRESH_TOKEN (24 hours for example). Therefore your JWT_TOKEN can be refreshed at '/auth/refresh' (AUTH SESSION);
+
 ### Database
 
 Database diagram can be found in the root directory: fashion-ecommerce.pdf
