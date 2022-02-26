@@ -78,7 +78,7 @@ API documentation can be accessed through SWAGGER at: "/api/docs/"
 - you can set a default address for your user (USER SESSION). It is optional;
 - add products to your order in progress at 'handle-product' (ORDERS SESSION). You can set negative ammounts in order to remove products. You can see the list of products and its IDs at 'products-show-case' (PRODUCTS SESSION);
 - you can check your order in progress details at 'get-order-details' (ORDERS SESSION);
-- once you finished to select your products, you can check out your order at 'check-out-order-in-progress' and then its status will be changed from 'request_in_progress' to 'request_done'. If you did not set a default address, you must provide a address ID you registered. If you have setted a default address, provide an address ID is optional;
+- once you finished to select your products, you can check out your order at 'check-out-order-in-progress' and then its status will be changed from 'request_in_progress' to 'request_done'. If you did not set a default address, you must provide an address ID you registered. If you setted a default address, provide an address ID is optional;
 - you can see your "NOT in progress" orders at 'get-orders-info' and check its detail through 'get-order-details/checked-out'.
 
 some addition features:
@@ -95,7 +95,7 @@ Database diagram can be found in the root directory: fashion-ecommerce.pdf
 
 ## Revert Seeds and Migrations
 
-In order to revert seeds and migrations, you MUST execute SEED revert before MIGRATION (even if you want to revert MIGRATIONS only, once SEED is a type of MIGRATION).
+In order to revert seeds and migrations, you MUST execute SEED revert before MIGRATION revert (even if you want to revert MIGRATIONS only, once SEED is a type of MIGRATION).
 
 ### Reverting seeds
 
@@ -132,9 +132,11 @@ $ npm run lint
 
 ## Test
 
-Some unit tests were applied at the more complexes services:
+Some unit tests were applied at the most complexes services:
 
 - handleProductToOrder.useCase
+- checkOutOrder.useCase
+- getOrderDetails.useCase
 
 ```bash
 # unit tests
