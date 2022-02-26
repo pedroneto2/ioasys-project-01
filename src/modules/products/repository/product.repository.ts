@@ -102,7 +102,15 @@ export class ProductRepository extends Repository<Product> {
   async productsShowCase(): Promise<Product[]> {
     try {
       return await this.find({
-        select: ['id', 'name', 'type', 'size', 'description', 'price'],
+        select: [
+          'id',
+          'name',
+          'type',
+          'size',
+          'stockCount',
+          'description',
+          'price',
+        ],
       });
     } catch (error) {
       throw new ConflictException(unexpected(error.message));

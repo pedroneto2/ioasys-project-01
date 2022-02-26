@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, Length, IsNumber, Min } from 'class-validator';
 import { ProductsSize } from '@shared/entities/product/productsSize.enum';
-import { ProductType } from '@shared/entities/productType/productType.entity';
 
 export class CreateProductRequestBodyDTO {
   @ApiProperty()
@@ -35,5 +34,5 @@ export class CreateProductRequestBodyDTO {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  public type: ProductType['name'];
+  public type: string;
 }
