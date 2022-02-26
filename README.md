@@ -40,6 +40,13 @@ ADMIN_CPF           => ADMIN CPF                     (OPTIONAL) EX: 12312312312
 ```bash
 $ npm install
 ```
+
+### Transpile TS to JS
+
+```bash
+$ npm run build
+```
+
 ### Run migrations
 ```bash
 $ npm run typeorm migration:run
