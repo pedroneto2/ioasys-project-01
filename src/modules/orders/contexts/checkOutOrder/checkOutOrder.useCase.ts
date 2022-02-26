@@ -52,8 +52,9 @@ export class CheckOutOrderUseCase {
       order.id,
     );
     // Save productsStamp
-    const productsStamp =
-      this.productStampRepository.saveProductStamp(productsStampList);
+    const productsStamp = await this.productStampRepository.saveProductStamp(
+      productsStampList,
+    );
     // Decrypt order update response
     this.handleRawKeys(order, 'clientName', 'client_name');
     this.handleRawKeys(order, 'clientCPF', 'client_cpf');
