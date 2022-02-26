@@ -132,6 +132,10 @@ $ npm run lint
 
 ## Test
 
+Some unit tests were applied at the more complexes services:
+
+- handleProductToOrder.useCase
+
 ```bash
 # unit tests
 $ npm run test
