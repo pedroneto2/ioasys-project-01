@@ -91,7 +91,7 @@ export class HandleProductToOrderUseCase {
     if (!quantity) {
       // if quantity reachs 0, delete the orderProduct
       orderProduct =
-        this.orderProductRepository.deleteOrderProductByOrderIdAndProductId(
+        await this.orderProductRepository.deleteOrderProductByOrderIdAndProductId(
           orderID,
           productID,
         );
