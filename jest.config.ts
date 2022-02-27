@@ -17,8 +17,8 @@ const TS_CONFIG_PATH = './tsconfig.json';
 const SRC_PATH = '<rootDir>/src';
 
 process.env = Object.assign(process.env, {
-  IV_HEX_KEY: '849bfcaa2f171d146f6b4831399d90ff',
-  CRYPTO_KEY: 'uQb6q6Q$V6qa3TVFQA#5dQ#7WQGzf4$!',
+  IV_HEX_KEY: '728aedff4e526a471c7a6725043e18aa',
+  CRYPTO_KEY: 'ad$54sDjhuz&*hs4Hh%se#sed6fW3s3s',
 });
 
 module.exports = {
